@@ -6,6 +6,8 @@ using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using System.Text;
 using System.Windows.Forms;
 
 namespace DERIN
@@ -21,6 +23,7 @@ namespace DERIN
               admin__pin, // Administrator Pin
               ftp_user = "school@zenlty.com.tr.ht",
               ftp_pass = "Kilavya59",
+              hash = "edebalianadolulisesi_derin",
               board_name;
         //|------------------------------------------------------------------------->set number & button click event
         private void Number_1_Click(object sender, EventArgs e) => numpad.Text += 1;
@@ -62,6 +65,17 @@ namespace DERIN
             StreamReader str = new StreamReader(pin_name); //  |--> Set Downloaded Pin
             pin = str.ReadLine(); //  |--> Reading downloading pin
             str.Close(); // |--> Readed pin
+            byte[] data = Convert.FromBase64String(pin);
+            using (MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider())
+            {
+                byte[] keys = md5.ComputeHash(UTF8Encoding.UTF8.GetBytes(hash));
+                using (TripleDESCryptoServiceProvider tripDes = new TripleDESCryptoServiceProvider() { Key = keys, Mode = CipherMode.ECB, Padding = PaddingMode.PKCS7 })
+                {
+                    ICryptoTransform transform = tripDes.CreateDecryptor();
+                    byte[] results = transform.TransformFinalBlock(data, 0, data.Length);
+                    pin = UTF8Encoding.UTF8.GetString(results);
+                }
+            }
         }
         private void Numpad_TextChanged(object sender, EventArgs e)
         {
@@ -104,11 +118,36 @@ namespace DERIN
                 sr.Close();
                 datastream.Close();
                 response.Close();
-                MessageBox.Show("OK");
+                Process process = new Process();
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                startInfo.CreateNoWindow = true;
+                startInfo.UseShellExecute = false;
+                startInfo.RedirectStandardOutput = true;
+                startInfo.FileName = "shutdown";
+                //       startInfo.Arguments = " -s -f -t 00";
+                MessageBox.Show("Shutdown");
+                process.StartInfo = startInfo;
+                process.Start();
             }
-            catch (Exception ex)
+            catch
             {
-                MessageBox.Show(ex.Message, "FTP 2.0 Delete");
+                MessageBox.Show("Lütfen Bilişim Teknolojileri Formatör Öğretmeni ile irtibata geçip hata kodunu bildiriniz. Bu hata akıllı tahtanın kapanmasına engel olabilecek düzeyde kritiktir.", "Hata Kodu : 100 ",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+            }
+            finally
+            {
+                Process process = new Process();
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                startInfo.CreateNoWindow = true;
+                startInfo.UseShellExecute = false;
+                startInfo.RedirectStandardOutput = true;
+                startInfo.FileName = "shutdown";
+                //        startInfo.Arguments = " -s -f -t 00";
+                MessageBox.Show("Shutdown");
+
+                process.StartInfo = startInfo;
+                process.Start();
             }
         }
 
@@ -199,19 +238,28 @@ namespace DERIN
                     FS.Close();
 
                 }
-                catch (Exception ex)
+                catch 
                 {
-                    MessageBox.Show(ex.Message, "Hata");
+                    MessageBox.Show("Lütfen Bilişim Teknolojileri Formatör Öğretmeni ile irtibata geçip hata kodunu bildiriniz. Bu hata akıllı tahtanın çalışmasına engel olabilecek düzeyde kritiktir.", "Hata Kodu : 101", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                Random rnd = new Random();
-                int randomname = rnd.Next(170,20000);
-                StreamWriter str = new StreamWriter("name.txt");
-                str.WriteLine("NO_NAME" + randomname.ToString ());
-                str.Close();
-                runningProgram();
+                try
+                {
+                    Random rnd = new Random();
+                    int randomname = rnd.Next(170, 20000);
+                    StreamWriter str = new StreamWriter("name.txt");
+                    str.WriteLine("NO_NAME" + randomname.ToString());
+                    str.Close();
+                    runningProgram();
+                }
+                catch
+                {
+                    MessageBox.Show("Lütfen Bilişim Teknolojileri Formatör Öğretmeni ile irtibata geçip hata kodunu bildiriniz. Bu hata akıllı tahtanın çalışmasına engel olabilecek düzeyde kritiktir.", "Hata Kodu : 102", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                }
+
             }
 
         }
