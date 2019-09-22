@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.numpad = new System.Windows.Forms.TextBox();
             this.btn_backspace = new System.Windows.Forms.PictureBox();
             this.number_0 = new System.Windows.Forms.PictureBox();
@@ -43,6 +45,12 @@
             this.number_1 = new System.Windows.Forms.PictureBox();
             this.btn_poweroff = new System.Windows.Forms.PictureBox();
             this.btn_lock = new System.Windows.Forms.PictureBox();
+            this.ekranıGörüntüleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tahtayıKilitleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bilgisayarıKapatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.yöneticiPaneliToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.notify = new System.Windows.Forms.NotifyIcon(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.btn_backspace)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.number_0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btn_clear)).BeginInit();
@@ -57,6 +65,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.number_1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btn_poweroff)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btn_lock)).BeginInit();
+            this.menu.SuspendLayout();
             this.SuspendLayout();
             // 
             // numpad
@@ -206,22 +215,73 @@
             // 
             // btn_poweroff
             // 
-            this.btn_poweroff.BackColor = System.Drawing.Color.Red;
+            this.btn_poweroff.Image = ((System.Drawing.Image)(resources.GetObject("btn_poweroff.Image")));
             this.btn_poweroff.Location = new System.Drawing.Point(119, 12);
             this.btn_poweroff.Name = "btn_poweroff";
             this.btn_poweroff.Size = new System.Drawing.Size(100, 100);
+            this.btn_poweroff.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.btn_poweroff.TabIndex = 1;
             this.btn_poweroff.TabStop = false;
             this.btn_poweroff.Click += new System.EventHandler(this.Btn_poweroff_Click);
             // 
             // btn_lock
             // 
-            this.btn_lock.BackColor = System.Drawing.Color.Yellow;
+            this.btn_lock.Image = global::DERIN.Properties.Resources.padlock;
             this.btn_lock.Location = new System.Drawing.Point(12, 12);
             this.btn_lock.Name = "btn_lock";
             this.btn_lock.Size = new System.Drawing.Size(100, 100);
+            this.btn_lock.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.btn_lock.TabIndex = 0;
             this.btn_lock.TabStop = false;
+            this.btn_lock.Click += new System.EventHandler(this.Btn_lock_Click);
+            // 
+            // ekranıGörüntüleToolStripMenuItem
+            // 
+            this.ekranıGörüntüleToolStripMenuItem.Name = "ekranıGörüntüleToolStripMenuItem";
+            this.ekranıGörüntüleToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.ekranıGörüntüleToolStripMenuItem.Text = "DERIN\'i aç";
+            this.ekranıGörüntüleToolStripMenuItem.Click += new System.EventHandler(this.EkranıGörüntüleToolStripMenuItem_Click);
+            // 
+            // tahtayıKilitleToolStripMenuItem
+            // 
+            this.tahtayıKilitleToolStripMenuItem.Name = "tahtayıKilitleToolStripMenuItem";
+            this.tahtayıKilitleToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.tahtayıKilitleToolStripMenuItem.Text = "Tahtayı Kilitle";
+            this.tahtayıKilitleToolStripMenuItem.Click += new System.EventHandler(this.TahtayıKilitleToolStripMenuItem_Click);
+            // 
+            // bilgisayarıKapatToolStripMenuItem
+            // 
+            this.bilgisayarıKapatToolStripMenuItem.Name = "bilgisayarıKapatToolStripMenuItem";
+            this.bilgisayarıKapatToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.bilgisayarıKapatToolStripMenuItem.Text = "Bilgisayarı Kapat";
+            this.bilgisayarıKapatToolStripMenuItem.Click += new System.EventHandler(this.BilgisayarıKapatToolStripMenuItem_Click);
+            // 
+            // yöneticiPaneliToolStripMenuItem
+            // 
+            this.yöneticiPaneliToolStripMenuItem.Name = "yöneticiPaneliToolStripMenuItem";
+            this.yöneticiPaneliToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.yöneticiPaneliToolStripMenuItem.Text = "Yönetici Paneli";
+            this.yöneticiPaneliToolStripMenuItem.Click += new System.EventHandler(this.YöneticiPaneliToolStripMenuItem_Click);
+            // 
+            // menu
+            // 
+            this.menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ekranıGörüntüleToolStripMenuItem,
+            this.tahtayıKilitleToolStripMenuItem,
+            this.bilgisayarıKapatToolStripMenuItem,
+            this.yöneticiPaneliToolStripMenuItem});
+            this.menu.Name = "menu";
+            this.menu.Size = new System.Drawing.Size(161, 92);
+            // 
+            // notify
+            // 
+            this.notify.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.notify.BalloonTipText = "DERIN";
+            this.notify.BalloonTipTitle = "DERIN";
+            this.notify.ContextMenuStrip = this.menu;
+            this.notify.Icon = ((System.Drawing.Icon)(resources.GetObject("notify.Icon")));
+            this.notify.Text = "DERIN";
+            this.notify.Visible = true;
             // 
             // Form1
             // 
@@ -243,6 +303,7 @@
             this.Controls.Add(this.numpad);
             this.Controls.Add(this.btn_poweroff);
             this.Controls.Add(this.btn_lock);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "DERIN";
@@ -262,6 +323,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.number_1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btn_poweroff)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btn_lock)).EndInit();
+            this.menu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -284,6 +346,12 @@
         private System.Windows.Forms.PictureBox btn_backspace;
         private System.Windows.Forms.PictureBox number_0;
         private System.Windows.Forms.PictureBox btn_clear;
+        private System.Windows.Forms.ToolStripMenuItem ekranıGörüntüleToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tahtayıKilitleToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem bilgisayarıKapatToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem yöneticiPaneliToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip menu;
+        private System.Windows.Forms.NotifyIcon notify;
     }
 }
 

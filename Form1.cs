@@ -1,5 +1,4 @@
-﻿using Shell32;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -42,29 +41,35 @@ namespace DERIN
         public Form1()
         {
             InitializeComponent();
+
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            SecurityBoard();
+
             this.DesktopLocation = new Point(0, 0);
             this.Height = 478; // Form Height
             this.Width = 245; // Form Width
             this.Left = Screen.PrimaryScreen.WorkingArea.Right - this.Width; // Screen Width
             this.Top = Screen.PrimaryScreen.WorkingArea.Bottom - this.Height; // Screen Height
+
             SyncingPin(); // Downloading  --> Syncing Pin
             runningProgram(); // FTP Upload --> Smart Board Open Status
+                        securityBoard();
+
         }
         public void SyncingPin()
         {
             WebClient webClient = new WebClient();
             webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(Completed); // Download finish --> Syncing Pin 
             webClient.DownloadFileAsync(new Uri(http + url + pin_name), appPath + pin_name);  // --> https://example.com/pin.txt
+
         }
         private void Completed(object sender, AsyncCompletedEventArgs e)
         {
             StreamReader str = new StreamReader(pin_name); //  |--> Set Downloaded Pin
             pin = str.ReadLine(); //  |--> Reading downloading pin
             str.Close(); // |--> Readed pin
+            //MD5 Encoding
             byte[] data = Convert.FromBase64String(pin);
             using (MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider())
             {
@@ -72,7 +77,7 @@ namespace DERIN
                 using (TripleDESCryptoServiceProvider tripDes = new TripleDESCryptoServiceProvider() { Key = keys, Mode = CipherMode.ECB, Padding = PaddingMode.PKCS7 })
                 {
                     ICryptoTransform transform = tripDes.CreateDecryptor();
-                    byte[] results = transform.TransformFinalBlock(data, 0, data.Length);
+                    byte[] results = transform.TransformFinalBlock(data, 0, data.Length); //MD5 Encoded
                     pin = UTF8Encoding.UTF8.GetString(results);
                 }
             }
@@ -82,19 +87,67 @@ namespace DERIN
             if (pin == numpad.Text)
             {
                 LoginSuccess(); // Login Successfully --> Disabled Basic Security
+                numpad.Clear();
             }
 
         }
         public void LoginSuccess()
         {
             Taskbar.Show(); // |--> Taskbar Show --> Disabled Basic Security
-            ShowDesktop();  // |--> Desktop Show --> Disabled Basic Security
+            ShowTask();  // |--> Desktop Show --> Disabled Basic Security
+            this.Hide();
+            notify.Visible = true;
         }
 
         private void Btn_poweroff_Click(object sender, EventArgs e)
         {
             PowerOff();
         }
+
+        private void Btn_lock_Click(object sender, EventArgs e)
+        {
+            securityBoard();
+            this.DesktopLocation = new Point(0, 0);
+            this.Height = 478; // Form Height
+            this.Width = 245; // Form Width
+            this.Left = Screen.PrimaryScreen.WorkingArea.Right - this.Width; // Screen Width
+            this.Top = Screen.PrimaryScreen.WorkingArea.Bottom - this.Height; // Screen Height
+            SyncingPin(); // Downloading  --> Syncing Pin
+            runningProgram(); // FTP Upload --> Smart Board Open Status            notify.Visible = false;
+
+        }
+
+        private void EkranıGörüntüleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Show();
+        }
+
+        private void BilgisayarıKapatToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            numpad.Clear();
+
+            PowerOff();
+        }
+
+        private void TahtayıKilitleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            numpad.Clear();
+            securityBoard();
+            this.DesktopLocation = new Point(0, 0);
+            this.Height = 478; // Form Height
+            this.Width = 245; // Form Width
+            this.Left = Screen.PrimaryScreen.WorkingArea.Right - this.Width; // Screen Width
+            this.Top = Screen.PrimaryScreen.WorkingArea.Bottom - this.Height; // Screen Height
+            SyncingPin(); // Downloading  --> Syncing Pin
+            runningProgram(); // FTP Upload --> Smart Board Open Status 
+        }
+
+        private void YöneticiPaneliToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            numpad.Clear();
+
+        }
+
         public void PowerOff()
         {
             try
@@ -151,13 +204,13 @@ namespace DERIN
             }
         }
 
-        public void SecurityBoard()
+        private void securityBoard()
         {
-            Shell shellObject = new Shell();
-            shellObject.ToggleDesktop(); // WinXp: ((Shell32.IShellDispatch4)shellObject).ToggleDesktop()
-            KillProcess(); // |--> Process Kill Timer Enabled for Hard Security
-            Taskbar.Hide();  // |--> Taskbar Hide for Security
-            HideDesktop();   // |--> Desktop Hide for Security
+            ShowTask();   // |--> Desktop Hide for Security
+             //   Shell shellObject = new Shell();
+        //        shellObject.ToggleDesktop(); // WinXp: ((Shell32.IShellDispatch4)shellObject).ToggleDesktop()
+                KillProcess(); // |--> Process Kill Timer Enabled for Hard Security
+                Taskbar.Hide();  // |--> Taskbar Hide for Security
         }
         private class Taskbar
         {
@@ -178,13 +231,21 @@ namespace DERIN
         }        // |--> Taskbar Hide & Show
 
         // |--> Desktop Hide & Show
-        [DllImport("user32.dll", SetLastError = true)]// |--> for Desktop Hide & Show
+        [DllImport("user32.dll")]
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+        [DllImport("user32.dll", SetLastError = true)]
         static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass, string lpszWindow);
-        [DllImport("user32.dll")] static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);   // |--> for Desktop Hide & Show
-        public void ShowDesktop() { IntPtr hWnd = FindWindowEx(IntPtr.Zero, IntPtr.Zero, "Progman", null); ShowWindow(hWnd, 5); }
-        public void HideDesktop() { IntPtr hWnd = FindWindowEx(IntPtr.Zero, IntPtr.Zero, "Progman", null); ShowWindow(hWnd, 0); }
-        // |--> Desktop Hide & Show
-        public void KillProcess()// |--> Kill Process --> For Basic Level Security
+        private void HideTask()
+        {
+            IntPtr hWnd = FindWindowEx(IntPtr.Zero, IntPtr.Zero, "Progman", null);
+            ShowWindow(hWnd, 0);
+        }
+        private void ShowTask()
+        {
+            IntPtr hWnd = FindWindowEx(IntPtr.Zero, IntPtr.Zero, "Progman", null);
+            ShowWindow(hWnd, 5);
+        }
+        private void KillProcess()// |--> Kill Process --> For Basic Level Security
         {
             foreach (var process in Process.GetProcessesByName("chrome")) { process.Kill(); } // Chrome Browser
             foreach (var process in Process.GetProcessesByName("taskmgr")) { process.Kill(); } // Task Manager
