@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Shell32;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
@@ -79,9 +80,11 @@ namespace DERIN
         }
         public void SecurityBoard()
         {
+            Shell shellObject = new Shell();
+            shellObject.ToggleDesktop(); // WinXp: ((Shell32.IShellDispatch4)shellObject).ToggleDesktop()
+            KillProcess(); // |--> Process Kill Timer Enabled for Hard Security
             Taskbar.Hide();  // |--> Taskbar Hide for Security
             HideDesktop();   // |--> Desktop Hide for Security
-            KillProcess(); // |--> Process Kill Timer Enabled for Hard Security
         }
         // |----------------------------------------------------------------------------------------------------------------------------|
         // |--> Taskbar Hide & Show
@@ -114,15 +117,28 @@ namespace DERIN
         // |----------------------------------------------------------------------------------------------------------------------------
         public void KillProcess()// |--> Kill Process --> For Basic Level Security
         {
-            foreach (var process in Process.GetProcessesByName("explorer")) { process.Kill(); } // Windows Explorer
             foreach (var process in Process.GetProcessesByName("chrome")) { process.Kill(); } // Chrome Browser
             foreach (var process in Process.GetProcessesByName("taskmgr")) { process.Kill(); } // Task Manager
             foreach (var process in Process.GetProcessesByName("MicrosoftEdge")) { process.Kill(); } // Microsoft Edge Browser
             foreach (var process in Process.GetProcessesByName("calc")) { process.Kill(); } // Calculator
             foreach (var process in Process.GetProcessesByName("cmd")) { process.Kill(); } // CMD
             foreach (var process in Process.GetProcessesByName("notepad")) { process.Kill(); } // NotePad
+            Process kill = new Process();
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            startInfo.CreateNoWindow = true;
+            startInfo.UseShellExecute = false;
+            startInfo.RedirectStandardOutput = true;
+            startInfo.FileName = "cmd.exe";
+            startInfo.Arguments = "taskkill /IM explorer.exe /F"; // Fixed access denied on kill explorer.exe for security
+            kill.StartInfo = startInfo;
+            kill.Start();
         }
         // |--> Kill Process --> For Basic Level Security
         // |----------------------------------------------------------------------------------------------------------------------------
+
+
+
+
     }
 }
