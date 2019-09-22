@@ -243,6 +243,7 @@
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "DERIN";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.btn_backspace)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.number_0)).EndInit();

