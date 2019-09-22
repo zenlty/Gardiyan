@@ -64,11 +64,13 @@
             this.numpad.BackColor = System.Drawing.SystemColors.Control;
             this.numpad.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.numpad.Enabled = false;
+            this.numpad.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.numpad.Location = new System.Drawing.Point(12, 119);
             this.numpad.Multiline = true;
             this.numpad.Name = "numpad";
             this.numpad.Size = new System.Drawing.Size(206, 32);
             this.numpad.TabIndex = 2;
+            this.numpad.TextChanged += new System.EventHandler(this.Numpad_TextChanged);
             // 
             // btn_backspace
             // 
@@ -241,6 +243,7 @@
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "DERIN";
+            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.btn_backspace)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.number_0)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btn_clear)).EndInit();
