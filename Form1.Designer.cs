@@ -206,14 +206,17 @@
             // 
             // btn_poweroff
             // 
+            this.btn_poweroff.BackColor = System.Drawing.Color.Red;
             this.btn_poweroff.Location = new System.Drawing.Point(119, 12);
             this.btn_poweroff.Name = "btn_poweroff";
             this.btn_poweroff.Size = new System.Drawing.Size(100, 100);
             this.btn_poweroff.TabIndex = 1;
             this.btn_poweroff.TabStop = false;
+            this.btn_poweroff.Click += new System.EventHandler(this.Btn_poweroff_Click);
             // 
             // btn_lock
             // 
+            this.btn_lock.BackColor = System.Drawing.Color.Yellow;
             this.btn_lock.Location = new System.Drawing.Point(12, 12);
             this.btn_lock.Name = "btn_lock";
             this.btn_lock.Size = new System.Drawing.Size(100, 100);

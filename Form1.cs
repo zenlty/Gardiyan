@@ -1,30 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using Shell32;
+﻿using Shell32;
+using System;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DERIN
 {
     public partial class Form1 : Form
     {
-        public static string appPath = Application.StartupPath + "\\",
+        public static string
+              appPath = Application.StartupPath + "\\",
               http = "http://", //URL First address
               url = "zenlty.com.tr.ht/", //Web address
-              ftp = "ftp://" + url, // FTP Address
               pin_name = "pin.txt", // Pin Location
               pin,  // Smart Board Login Pin
-              admin__pin; // Administrator Pin
+              admin__pin, // Administrator Pin
+              ftp_user = "school@zenlty.com.tr.ht",
+              ftp_pass = "Kilavya59",
+              board_name;
         //|------------------------------------------------------------------------->set number & button click event
         private void Number_1_Click(object sender, EventArgs e) => numpad.Text += 1;
         private void Number_2_Click(object sender, EventArgs e) => numpad.Text += 2;
@@ -52,6 +49,7 @@ namespace DERIN
             this.Left = Screen.PrimaryScreen.WorkingArea.Right - this.Width; // Screen Width
             this.Top = Screen.PrimaryScreen.WorkingArea.Bottom - this.Height; // Screen Height
             SyncingPin(); // Downloading  --> Syncing Pin
+            runningProgram(); // FTP Upload --> Smart Board Open Status
         }
         public void SyncingPin()
         {
@@ -78,6 +76,42 @@ namespace DERIN
             Taskbar.Show(); // |--> Taskbar Show --> Disabled Basic Security
             ShowDesktop();  // |--> Desktop Show --> Disabled Basic Security
         }
+
+        private void Btn_poweroff_Click(object sender, EventArgs e)
+        {
+            PowerOff();
+        }
+        public void PowerOff()
+        {
+            try
+            {
+                StreamReader str = new StreamReader("name.txt");
+                string tahtaadi = str.ReadLine();
+                str.Close();
+                string uri = "ftp://" + url + "public_html/" + board_name + ".txt";
+
+                FtpWebRequest reqFTP;
+                reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(uri));
+                reqFTP.Credentials = new NetworkCredential(ftp_user, ftp_pass);
+                reqFTP.KeepAlive = false;
+                reqFTP.Method = WebRequestMethods.Ftp.DeleteFile;
+                string result = String.Empty;
+                FtpWebResponse response = (FtpWebResponse)reqFTP.GetResponse();
+                long size = response.ContentLength;
+                Stream datastream = response.GetResponseStream();
+                StreamReader sr = new StreamReader(datastream);
+                result = sr.ReadToEnd();
+                sr.Close();
+                datastream.Close();
+                response.Close();
+                MessageBox.Show("OK");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "FTP 2.0 Delete");
+            }
+        }
+
         public void SecurityBoard()
         {
             Shell shellObject = new Shell();
@@ -86,8 +120,6 @@ namespace DERIN
             Taskbar.Hide();  // |--> Taskbar Hide for Security
             HideDesktop();   // |--> Desktop Hide for Security
         }
-        // |----------------------------------------------------------------------------------------------------------------------------|
-        // |--> Taskbar Hide & Show
         private class Taskbar
         {
             [DllImport("user32.dll")]
@@ -104,9 +136,8 @@ namespace DERIN
             protected static int HandleOfStartButton { get { int handleOfDesktop = GetDesktopWindow(); int handleOfStartButton = FindWindowEx(handleOfDesktop, 0, "button", 0); return handleOfStartButton; } }
             public static void Show() { ShowWindow(Handle, SW_SHOW); ShowWindow(HandleOfStartButton, SW_SHOW); }
             public static void Hide() { ShowWindow(Handle, SW_HIDE); ShowWindow(HandleOfStartButton, SW_HIDE); }
-        }
-        // |--> Taskbar Hide & Show
-        // |----------------------------------------------------------------------------------------------------------------------------|
+        }        // |--> Taskbar Hide & Show
+
         // |--> Desktop Hide & Show
         [DllImport("user32.dll", SetLastError = true)]// |--> for Desktop Hide & Show
         static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass, string lpszWindow);
@@ -114,7 +145,6 @@ namespace DERIN
         public void ShowDesktop() { IntPtr hWnd = FindWindowEx(IntPtr.Zero, IntPtr.Zero, "Progman", null); ShowWindow(hWnd, 5); }
         public void HideDesktop() { IntPtr hWnd = FindWindowEx(IntPtr.Zero, IntPtr.Zero, "Progman", null); ShowWindow(hWnd, 0); }
         // |--> Desktop Hide & Show
-        // |----------------------------------------------------------------------------------------------------------------------------
         public void KillProcess()// |--> Kill Process --> For Basic Level Security
         {
             foreach (var process in Process.GetProcessesByName("chrome")) { process.Kill(); } // Chrome Browser
@@ -135,10 +165,58 @@ namespace DERIN
             kill.Start();
         }
         // |--> Kill Process --> For Basic Level Security
-        // |----------------------------------------------------------------------------------------------------------------------------
 
+        public void runningProgram()
+        {
+            try
+            {
+                StreamReader str = new StreamReader("name.txt");
+                board_name = str.ReadLine();
+                str.Close();
+                FileInfo FI = new FileInfo(appPath + "name.txt");
+                string uri = "ftp://" + url + "public_html/" + board_name + ".txt";
+                FtpWebRequest FTP;
+                FTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(uri));
+                FTP.Credentials = new NetworkCredential(ftp_user, ftp_pass);
+                FTP.KeepAlive = false;
+                FTP.Method = WebRequestMethods.Ftp.UploadFile;
+                FTP.UseBinary = true;
+                FTP.ContentLength = FI.Length;
+                int buffLength = 2048;
+                byte[] buff = new byte[buffLength];
+                int contentLen;
+                FileStream FS = FI.OpenRead();
+                try
+                {
+                    Stream strm = FTP.GetRequestStream();
+                    contentLen = FS.Read(buff, 0, buffLength);
+                    while (contentLen != 0)
+                    {
+                        strm.Write(buff, 0, contentLen);
+                        contentLen = FS.Read(buff, 0, buffLength);
+                    }
+                    strm.Close();
+                    FS.Close();
 
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Hata");
+                }
+            }
+            catch (Exception ex)
+            {
+                Random rnd = new Random();
+                int randomname = rnd.Next(170,20000);
+                StreamWriter str = new StreamWriter("name.txt");
+                str.WriteLine("NO_NAME" + randomname.ToString ());
+                str.Close();
+                runningProgram();
+            }
 
+        }
+
+    
 
     }
 }
