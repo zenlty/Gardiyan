@@ -1,12 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
+using Shell32;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DERIN
@@ -41,28 +46,22 @@ namespace DERIN
         public Form1()
         {
             InitializeComponent();
-
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            SecurityBoard();
             this.DesktopLocation = new Point(0, 0);
             this.Height = 478; // Form Height
             this.Width = 245; // Form Width
             this.Left = Screen.PrimaryScreen.WorkingArea.Right - this.Width; // Screen Width
             this.Top = Screen.PrimaryScreen.WorkingArea.Bottom - this.Height; // Screen Height
-
             SyncingPin(); // Downloading  --> Syncing Pin
-            runningProgram(); // FTP Upload --> Smart Board Open Status
-                        securityBoard();
-
         }
         public void SyncingPin()
         {
             WebClient webClient = new WebClient();
             webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(Completed); // Download finish --> Syncing Pin 
             webClient.DownloadFileAsync(new Uri(http + url + pin_name), appPath + pin_name);  // --> https://example.com/pin.txt
-
         }
         private void Completed(object sender, AsyncCompletedEventArgs e)
         {
@@ -82,73 +81,12 @@ namespace DERIN
                 }
             }
         }
-        private void Numpad_TextChanged(object sender, EventArgs e)
-        {
-            if (pin == numpad.Text)
-            {
-                LoginSuccess(); // Login Successfully --> Disabled Basic Security
-                numpad.Clear();
-            }
-
-        }
-        public void LoginSuccess()
-        {
-            Taskbar.Show(); // |--> Taskbar Show --> Disabled Basic Security
-            ShowTask();  // |--> Desktop Show --> Disabled Basic Security
-            this.Hide();
-            notify.Visible = true;
-        }
 
         private void Btn_poweroff_Click(object sender, EventArgs e)
         {
-            PowerOff();
+            poweroff();
         }
-
-        private void Btn_lock_Click(object sender, EventArgs e)
-        {
-            securityBoard();
-            this.DesktopLocation = new Point(0, 0);
-            this.Height = 478; // Form Height
-            this.Width = 245; // Form Width
-            this.Left = Screen.PrimaryScreen.WorkingArea.Right - this.Width; // Screen Width
-            this.Top = Screen.PrimaryScreen.WorkingArea.Bottom - this.Height; // Screen Height
-            SyncingPin(); // Downloading  --> Syncing Pin
-            runningProgram(); // FTP Upload --> Smart Board Open Status            notify.Visible = false;
-
-        }
-
-        private void EkranıGörüntüleToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.Show();
-        }
-
-        private void BilgisayarıKapatToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            numpad.Clear();
-
-            PowerOff();
-        }
-
-        private void TahtayıKilitleToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            numpad.Clear();
-            securityBoard();
-            this.DesktopLocation = new Point(0, 0);
-            this.Height = 478; // Form Height
-            this.Width = 245; // Form Width
-            this.Left = Screen.PrimaryScreen.WorkingArea.Right - this.Width; // Screen Width
-            this.Top = Screen.PrimaryScreen.WorkingArea.Bottom - this.Height; // Screen Height
-            SyncingPin(); // Downloading  --> Syncing Pin
-            runningProgram(); // FTP Upload --> Smart Board Open Status 
-        }
-
-        private void YöneticiPaneliToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            numpad.Clear();
-
-        }
-
-        public void PowerOff()
+        private void poweroff()
         {
             try
             {
@@ -185,7 +123,7 @@ namespace DERIN
             }
             catch
             {
-                MessageBox.Show("Lütfen Bilişim Teknolojileri Formatör Öğretmeni ile irtibata geçip hata kodunu bildiriniz. Bu hata akıllı tahtanın kapanmasına engel olabilecek düzeyde kritiktir.", "Hata Kodu : 100 ",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                MessageBox.Show("Lütfen Bilişim Teknolojileri Formatör Öğretmeni ile irtibata geçip hata kodunu bildiriniz. Bu hata akıllı tahtanın kapanmasına engel olabilecek düzeyde kritiktir.", "Hata Kodu : 100 ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             finally
             {
@@ -203,15 +141,75 @@ namespace DERIN
                 process.Start();
             }
         }
-
-        private void securityBoard()
+        private void locker()
         {
-            ShowTask();   // |--> Desktop Hide for Security
-             //   Shell shellObject = new Shell();
-        //        shellObject.ToggleDesktop(); // WinXp: ((Shell32.IShellDispatch4)shellObject).ToggleDesktop()
-                KillProcess(); // |--> Process Kill Timer Enabled for Hard Security
-                Taskbar.Hide();  // |--> Taskbar Hide for Security
+            numpad.Clear();
+            Taskbar.Hide();  // |--> Taskbar Hide for Security
+            HideDesktop();   // |--> Desktop Hide for Security
+                             //   KillProcess(); // |--> Process Kill Timer Enabled for Hard Security
+         //   Shell shellObject = new Shell();
+    //     //   shellObject.ToggleDesktop();
+            this.Hide();
+            this.Show();
         }
+
+
+    
+        private void Btn_lock_Click(object sender, EventArgs e)
+        {
+        locker() ;
+
+        }
+
+        private void EkranıGörüntüleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            numpad.Clear();
+
+            this.Show();
+        }
+
+        private void TahtayıKilitleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            locker();
+
+        }
+
+        private void BilgisayarıKapatToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            numpad.Clear();
+
+            poweroff();
+        }
+
+        private void Notify_Click(object sender, EventArgs e)
+        {
+            locker();
+        }
+
+        private void Numpad_TextChanged(object sender, EventArgs e)
+        {
+            if (pin == numpad.Text)
+            {
+                LoginSuccess(); // Login Successfully --> Disabled Basic Security
+            }
+
+        }
+        public void LoginSuccess()
+        {
+            Taskbar.Show(); // |--> Taskbar Show --> Disabled Basic Security
+            ShowDesktop();  // |--> Desktop Show --> Disabled Basic Security
+            this.Hide();
+        }
+        public void SecurityBoard()
+        {
+            Taskbar.Hide();  // |--> Taskbar Hide for Security
+            HideDesktop();   // |--> Desktop Hide for Security
+            KillProcess(); // |--> Process Kill Timer Enabled for Hard Security
+            Shell shellObject = new Shell();
+            shellObject.ToggleDesktop();
+        }
+        // |----------------------------------------------------------------------------------------------------------------------------|
+        // |--> Taskbar Hide & Show
         private class Taskbar
         {
             [DllImport("user32.dll")]
@@ -228,24 +226,18 @@ namespace DERIN
             protected static int HandleOfStartButton { get { int handleOfDesktop = GetDesktopWindow(); int handleOfStartButton = FindWindowEx(handleOfDesktop, 0, "button", 0); return handleOfStartButton; } }
             public static void Show() { ShowWindow(Handle, SW_SHOW); ShowWindow(HandleOfStartButton, SW_SHOW); }
             public static void Hide() { ShowWindow(Handle, SW_HIDE); ShowWindow(HandleOfStartButton, SW_HIDE); }
-        }        // |--> Taskbar Hide & Show
-
+        }
+        // |--> Taskbar Hide & Show
+        // |----------------------------------------------------------------------------------------------------------------------------|
         // |--> Desktop Hide & Show
-        [DllImport("user32.dll")]
-        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-        [DllImport("user32.dll", SetLastError = true)]
+        [DllImport("user32.dll", SetLastError = true)]// |--> for Desktop Hide & Show
         static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass, string lpszWindow);
-        private void HideTask()
-        {
-            IntPtr hWnd = FindWindowEx(IntPtr.Zero, IntPtr.Zero, "Progman", null);
-            ShowWindow(hWnd, 0);
-        }
-        private void ShowTask()
-        {
-            IntPtr hWnd = FindWindowEx(IntPtr.Zero, IntPtr.Zero, "Progman", null);
-            ShowWindow(hWnd, 5);
-        }
-        private void KillProcess()// |--> Kill Process --> For Basic Level Security
+        [DllImport("user32.dll")] static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);   // |--> for Desktop Hide & Show
+        public void ShowDesktop() { IntPtr hWnd = FindWindowEx(IntPtr.Zero, IntPtr.Zero, "Progman", null); ShowWindow(hWnd, 5); }
+        public void HideDesktop() { IntPtr hWnd = FindWindowEx(IntPtr.Zero, IntPtr.Zero, "Progman", null); ShowWindow(hWnd, 0); }
+        // |--> Desktop Hide & Show
+        // |----------------------------------------------------------------------------------------------------------------------------
+        public void KillProcess()// |--> Kill Process --> For Basic Level Security
         {
             foreach (var process in Process.GetProcessesByName("chrome")) { process.Kill(); } // Chrome Browser
             foreach (var process in Process.GetProcessesByName("taskmgr")) { process.Kill(); } // Task Manager
@@ -253,79 +245,8 @@ namespace DERIN
             foreach (var process in Process.GetProcessesByName("calc")) { process.Kill(); } // Calculator
             foreach (var process in Process.GetProcessesByName("cmd")) { process.Kill(); } // CMD
             foreach (var process in Process.GetProcessesByName("notepad")) { process.Kill(); } // NotePad
-            Process kill = new Process();
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            startInfo.CreateNoWindow = true;
-            startInfo.UseShellExecute = false;
-            startInfo.RedirectStandardOutput = true;
-            startInfo.FileName = "cmd.exe";
-            startInfo.Arguments = "taskkill /IM explorer.exe /F"; // Fixed access denied on kill explorer.exe for security
-            kill.StartInfo = startInfo;
-            kill.Start();
         }
         // |--> Kill Process --> For Basic Level Security
-
-        public void runningProgram()
-        {
-            try
-            {
-                StreamReader str = new StreamReader("name.txt");
-                board_name = str.ReadLine();
-                str.Close();
-                FileInfo FI = new FileInfo(appPath + "name.txt");
-                string uri = "ftp://" + url + "public_html/" + board_name + ".txt";
-                FtpWebRequest FTP;
-                FTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(uri));
-                FTP.Credentials = new NetworkCredential(ftp_user, ftp_pass);
-                FTP.KeepAlive = false;
-                FTP.Method = WebRequestMethods.Ftp.UploadFile;
-                FTP.UseBinary = true;
-                FTP.ContentLength = FI.Length;
-                int buffLength = 2048;
-                byte[] buff = new byte[buffLength];
-                int contentLen;
-                FileStream FS = FI.OpenRead();
-                try
-                {
-                    Stream strm = FTP.GetRequestStream();
-                    contentLen = FS.Read(buff, 0, buffLength);
-                    while (contentLen != 0)
-                    {
-                        strm.Write(buff, 0, contentLen);
-                        contentLen = FS.Read(buff, 0, buffLength);
-                    }
-                    strm.Close();
-                    FS.Close();
-
-                }
-                catch 
-                {
-                    MessageBox.Show("Lütfen Bilişim Teknolojileri Formatör Öğretmeni ile irtibata geçip hata kodunu bildiriniz. Bu hata akıllı tahtanın çalışmasına engel olabilecek düzeyde kritiktir.", "Hata Kodu : 101", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-            }
-            catch
-            {
-                try
-                {
-                    Random rnd = new Random();
-                    int randomname = rnd.Next(170, 20000);
-                    StreamWriter str = new StreamWriter("name.txt");
-                    str.WriteLine("NO_NAME" + randomname.ToString());
-                    str.Close();
-                    runningProgram();
-                }
-                catch
-                {
-                    MessageBox.Show("Lütfen Bilişim Teknolojileri Formatör Öğretmeni ile irtibata geçip hata kodunu bildiriniz. Bu hata akıllı tahtanın çalışmasına engel olabilecek düzeyde kritiktir.", "Hata Kodu : 102", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-                }
-
-            }
-
-        }
-
-    
-
+        // |----------------------------------------------------------------------------------------------------------------------------
     }
 }
