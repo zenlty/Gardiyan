@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -77,10 +78,28 @@ namespace DERIN
             Taskbar.Show(); // |--> Taskbar Show --> Disabled Basic Security
             ShowDesktop();  // |--> Desktop Show --> Disabled Basic Security
         }
+
+        public void kill_process()
+        {
+
+            foreach (var process in Process.GetProcessesByName("explorer"))
+            {
+                process.Kill();
+            }
+            foreach (var process in Process.GetProcessesByName("chrome"))
+            {
+                process.Kill();
+            }
+            foreach (var process in Process.GetProcessesByName("taskmgr"))
+            {
+                process.Kill();
+            }
+        }
         public void securityboard()
         {
             Taskbar.Hide();  // |--> Taskbar Hide for Security
             HideDesktop();   // |--> Desktop Hide for Security
+            kill_process(); // |--> Process Kill Timer Enabled for Hard Security
         }
 
         // |--> Taskbar Hide & Show
