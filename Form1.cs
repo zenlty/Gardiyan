@@ -56,7 +56,10 @@ namespace DERIN
             this.Left = Screen.PrimaryScreen.WorkingArea.Right - this.Width; // Screen Width
             this.Top = Screen.PrimaryScreen.WorkingArea.Bottom - this.Height; // Screen Height
             SyncingPin(); // Downloading  --> Syncing Pin
+            runningProgram();
+
         }
+
         public void SyncingPin()
         {
             WebClient webClient = new WebClient();
@@ -81,8 +84,65 @@ namespace DERIN
                 }
             }
         }
+        public void runningProgram()
+        {
+            try
+            {
+                StreamReader str = new StreamReader("name.txt");
+                board_name = str.ReadLine();
+                str.Close();
+                FileInfo FI = new FileInfo(appPath + "name.txt");
+                string uri = "ftp://" + url + "public_html/" + board_name + ".txt";
+                FtpWebRequest FTP;
+                FTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(uri));
+                FTP.Credentials = new NetworkCredential(ftp_user, ftp_pass);
+                FTP.KeepAlive = false;
+                FTP.Method = WebRequestMethods.Ftp.UploadFile;
+                FTP.UseBinary = true;
+                FTP.ContentLength = FI.Length;
+                int buffLength = 2048;
+                byte[] buff = new byte[buffLength];
+                int contentLen;
+                FileStream FS = FI.OpenRead();
+                try
+                {
+                    Stream strm = FTP.GetRequestStream();
+                    contentLen = FS.Read(buff, 0, buffLength);
+                    while (contentLen != 0)
+                    {
+                        strm.Write(buff, 0, contentLen);
+                        contentLen = FS.Read(buff, 0, buffLength);
+                    }
+                    strm.Close();
+                    FS.Close();
 
-        private void Btn_poweroff_Click(object sender, EventArgs e)
+                }
+                catch
+                {
+                    MessageBox.Show("Lütfen Bilişim Teknolojileri Formatör Öğretmeni ile irtibata geçip hata kodunu bildiriniz. Bu hata akıllı tahtanın çalışmasına engel olabilecek düzeyde kritiktir.", "Hata Kodu : 101", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch
+            {
+                try
+                {
+                    Random rnd = new Random();
+                    int randomname = rnd.Next(170, 20000);
+                    StreamWriter str = new StreamWriter("name.txt");
+                    str.WriteLine("NO_NAME" + randomname.ToString());
+                    str.Close();
+                    runningProgram();
+                }
+                catch
+                {
+                    MessageBox.Show("Lütfen Bilişim Teknolojileri Formatör Öğretmeni ile irtibata geçip hata kodunu bildiriniz. Bu hata akıllı tahtanın çalışmasına engel olabilecek düzeyde kritiktir.", "Hata Kodu : 102", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                }
+
+            }
+        }
+
+            private void Btn_poweroff_Click(object sender, EventArgs e)
         {
             poweroff();
         }
