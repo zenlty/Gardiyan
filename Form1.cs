@@ -49,17 +49,17 @@ namespace DERIN
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            SecurityBoard();
-            this.DesktopLocation = new Point(0, 0);
+            SecurityBoard(); // Smart board protected
+            this.DesktopLocation = new Point(0, 0); // Set form location center
             this.Height = 478; // Form Height
             this.Width = 245; // Form Width
             this.Left = Screen.PrimaryScreen.WorkingArea.Left; //- this.Width; // Screen Width
             this.Top = Screen.PrimaryScreen.WorkingArea.Bottom - this.Height; // Screen Height
             SyncingPin(); // Downloading  --> Syncing Pin
-            runningProgram();
-            System.Threading.Thread.Sleep(1000);
-            MinimizeAll();
-            this.Show();
+            runningProgram(); // Upload FTP --> Board Name
+            System.Threading.Thread.Sleep(1000); // Fixed forms always hide
+            MinimizeAll(); // Minimize all windows forms
+            this.Show(); // Form show it
         }
 
         public void SyncingPin()
@@ -84,6 +84,57 @@ namespace DERIN
                     byte[] results = transform.TransformFinalBlock(data, 0, data.Length); //MD5 Encoded
                     pin = UTF8Encoding.UTF8.GetString(results);
                 }
+            }
+        }
+        private void manuelpoweroff()
+        {
+            try
+            {
+                StreamReader str = new StreamReader("name.txt");
+                string tahtaadi = str.ReadLine();
+                str.Close();
+                string uri = "ftp://" + url + "public_html/" + board_name + ".txt";
+                FtpWebRequest reqFTP;
+                reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(uri));
+                reqFTP.Credentials = new NetworkCredential(ftp_user, ftp_pass);
+                reqFTP.KeepAlive = false;
+                reqFTP.Method = WebRequestMethods.Ftp.DeleteFile;
+                string result = String.Empty;
+                FtpWebResponse response = (FtpWebResponse)reqFTP.GetResponse();
+                long size = response.ContentLength;
+                Stream datastream = response.GetResponseStream();
+                StreamReader sr = new StreamReader(datastream);
+                result = sr.ReadToEnd();
+                sr.Close();
+                datastream.Close();
+                response.Close();
+                Process process = new Process();
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                startInfo.CreateNoWindow = true;
+                startInfo.UseShellExecute = false;
+                startInfo.RedirectStandardOutput = true;
+                startInfo.FileName = "shutdown";
+                startInfo.Arguments = " -s -f -t 00";
+                process.StartInfo = startInfo;
+                process.Start();
+            }
+            catch
+            {
+                MessageBox.Show("Lütfen Bilişim Teknolojileri Formatör Öğretmeni ile irtibata geçip hata kodunu bildiriniz. Bu hata akıllı tahtanın kapanmasına engel olabilecek düzeyde kritiktir.", "Hata Kodu : 100 ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            finally
+            {
+                Process process = new Process();
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                startInfo.CreateNoWindow = true;
+                startInfo.UseShellExecute = false;
+                startInfo.RedirectStandardOutput = true;
+                startInfo.FileName = "shutdown";
+                startInfo.Arguments = " -s -f -t 00";
+                process.StartInfo = startInfo;
+                process.Start();
             }
         }
         public void runningProgram()
@@ -144,74 +195,76 @@ namespace DERIN
             }
         }
 
-            private void Btn_poweroff_Click(object sender, EventArgs e)
+        private void Btn_poweroff_Click(object sender, EventArgs e)
         {
-            poweroff();
+            manuelpoweroff(); // Power off pc and deleted name ftp info
         }
         private void poweroff()
         {
-            try
+            DialogResult option = MessageBox.Show("Yönetici tarafından akıllı tahtaya kapatma talimatı verilmiştir.", "Bilgilendirme Penceresi", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+            if (option == DialogResult.Yes)
             {
-                StreamReader str = new StreamReader("name.txt");
-                string tahtaadi = str.ReadLine();
-                str.Close();
-                string uri = "ftp://" + url + "public_html/" + board_name + ".txt";
+                try
+                {
+                    StreamReader str = new StreamReader("name.txt");
+                    string tahtaadi = str.ReadLine();
+                    str.Close();
+                    string uri = "ftp://" + url + "public_html/" + board_name + ".txt";
+                    FtpWebRequest reqFTP;
+                    reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(uri));
+                    reqFTP.Credentials = new NetworkCredential(ftp_user, ftp_pass);
+                    reqFTP.KeepAlive = false;
+                    reqFTP.Method = WebRequestMethods.Ftp.DeleteFile;
+                    string result = String.Empty;
+                    FtpWebResponse response = (FtpWebResponse)reqFTP.GetResponse();
+                    long size = response.ContentLength;
+                    Stream datastream = response.GetResponseStream();
+                    StreamReader sr = new StreamReader(datastream);
+                    result = sr.ReadToEnd();
+                    sr.Close();
+                    datastream.Close();
+                    response.Close();
+                    Process process = new Process();
+                    ProcessStartInfo startInfo = new ProcessStartInfo();
+                    startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                    startInfo.CreateNoWindow = true;
+                    startInfo.UseShellExecute = false;
+                    startInfo.RedirectStandardOutput = true;
+                    startInfo.FileName = "shutdown";
+                    startInfo.Arguments = " -s -f -t 00";
+                    process.StartInfo = startInfo;
+                    process.Start();
+                }
+                catch
+                {
+                    MessageBox.Show("Lütfen Bilişim Teknolojileri Formatör Öğretmeni ile irtibata geçip hata kodunu bildiriniz. Bu hata akıllı tahtanın kapanmasına engel olabilecek düzeyde kritiktir.", "Hata Kodu : 100 ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                finally
+                {
+                    Process process = new Process();
+                    ProcessStartInfo startInfo = new ProcessStartInfo();
+                    startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                    startInfo.CreateNoWindow = true;
+                    startInfo.UseShellExecute = false;
+                    startInfo.RedirectStandardOutput = true;
+                    startInfo.FileName = "shutdown";
+                    startInfo.Arguments = " -s -f -t 00";
+                    process.StartInfo = startInfo;
+                    process.Start();
+                }
+            }
+            if (option == DialogResult.No)
+            {
+                NotifyMessage("Bilgilendirme Metni", "Akıllı Tahta kapatılmayacaktır.", 1000);
 
-                FtpWebRequest reqFTP;
-                reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(uri));
-                reqFTP.Credentials = new NetworkCredential(ftp_user, ftp_pass);
-                reqFTP.KeepAlive = false;
-                reqFTP.Method = WebRequestMethods.Ftp.DeleteFile;
-                string result = String.Empty;
-                FtpWebResponse response = (FtpWebResponse)reqFTP.GetResponse();
-                long size = response.ContentLength;
-                Stream datastream = response.GetResponseStream();
-                StreamReader sr = new StreamReader(datastream);
-                result = sr.ReadToEnd();
-                sr.Close();
-                datastream.Close();
-                response.Close();
-                Process process = new Process();
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                startInfo.CreateNoWindow = true;
-                startInfo.UseShellExecute = false;
-                startInfo.RedirectStandardOutput = true;
-                startInfo.FileName = "shutdown";
-                //       startInfo.Arguments = " -s -f -t 00";
-                MessageBox.Show("Shutdown");
-                process.StartInfo = startInfo;
-                process.Start();
             }
-            catch
-            {
-                MessageBox.Show("Lütfen Bilişim Teknolojileri Formatör Öğretmeni ile irtibata geçip hata kodunu bildiriniz. Bu hata akıllı tahtanın kapanmasına engel olabilecek düzeyde kritiktir.", "Hata Kodu : 100 ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            finally
-            {
-                Process process = new Process();
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                startInfo.CreateNoWindow = true;
-                startInfo.UseShellExecute = false;
-                startInfo.RedirectStandardOutput = true;
-                startInfo.FileName = "shutdown";
-                //        startInfo.Arguments = " -s -f -t 00";
-                MessageBox.Show("Shutdown");
 
-                process.StartInfo = startInfo;
-                process.Start();
-            }
+
+
         }
         [DllImport("user32.dll")]
-
         static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, int dwExtraInfo);
-        public static void MinimizeAll()
-        {
-            keybd_event(0x5B, 0, 0, 0);
-            keybd_event(0x4D, 0, 0, 0);
-            keybd_event(0x5B, 0, 0x2, 0);
-        }
+        public static void MinimizeAll() { keybd_event(0x5B, 0, 0, 0); keybd_event(0x4D, 0, 0, 0); keybd_event(0x5B, 0, 0x2, 0); } // Minimize All Windows
         private void locker()
         {
             numpad.Clear();
@@ -220,64 +273,63 @@ namespace DERIN
             this.DesktopLocation = new Point(0, 0);
             this.Height = 478; // Form Height
             this.Width = 245; // Form Width
-            this.Left = Screen.PrimaryScreen.WorkingArea.Left; //- this.Width; // Screen Width
+            this.Left = Screen.PrimaryScreen.WorkingArea.Left;  // Screen Width --> Set form position right to left v0.3 beta.
             this.Top = Screen.PrimaryScreen.WorkingArea.Bottom - this.Height; // Screen Height
             SyncingPin(); // Downloading  --> Syncing Pin
-            runningProgram();
+            runningProgram(); 
             this.TopMost = true;
             this.Focus();
             this.BringToFront();
             this.Show();
             btn_lock.Enabled = false;
         }
-
-
-    
-        private void Btn_lock_Click(object sender, EventArgs e)
+        private void powercheck()
         {
-        locker() ;
+            string FTPDosyaYolu = "ftp://" + url + "public_html/" + board_name + ".txt";
+            FtpWebRequest request = (FtpWebRequest)FtpWebRequest.Create(FTPDosyaYolu);
+            string username = ftp_user;
+            string password = ftp_pass;
+            request.Credentials = new NetworkCredential(username, password);
+            request.UsePassive = true; // pasif olarak kullanabilme
+            request.UseBinary = true; // aktarım binary ile olacak
+            request.KeepAlive = false; // sürekli açık tutma
 
-        }
+            request.Method = WebRequestMethods.Ftp.GetFileSize;
 
-        private void EkranıGörüntüleToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            numpad.Clear();
-
-            this.Show();
-        }
-
-        private void TahtayıKilitleToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            locker();
-
-        }
-
-        private void BilgisayarıKapatToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            numpad.Clear();
-
-            poweroff();
-        }
-
-        private void Notify_Click(object sender, EventArgs e)
-        {
-            locker();
-        }
-
-        private void Numpad_TextChanged(object sender, EventArgs e)
-        {
-            if (pin == numpad.Text)
+            try
             {
-                LoginSuccess(); // Login Successfully --> Disabled Basic Security
+                FtpWebResponse response = (FtpWebResponse)request.GetResponse(); // File found --> Smart board is on
             }
-
+            catch
+            {
+                poweroff(); // File not found --> Smart board power off
+            }
         }
+        void NotifyMessage(string title, string message, int tip)
+        {
+            notify.BalloonTipText = message;
+            notify.BalloonTipIcon = ToolTipIcon.Info;
+            notify.BalloonTipTitle = title;
+            notify.ShowBalloonTip(tip);
+        }
+        private void Btn_lock_Click(object sender, EventArgs e) { locker(); }
+        private void EkranıGörüntüleToolStripMenuItem_Click(object sender, EventArgs e) { numpad.Clear(); Show(); }
+        private void TahtayıKilitleToolStripMenuItem_Click(object sender, EventArgs e) { locker(); }
+        private void BilgisayarıKapatToolStripMenuItem_Click(object sender, EventArgs e) { numpad.Clear(); manuelpoweroff(); }
+
+        private void Powerchechtimer_Tick(object sender, EventArgs e)
+        {
+            powercheck();
+        }
+
+        private void Numpad_TextChanged(object sender, EventArgs e) { if (pin == numpad.Text) { LoginSuccess(); } } // Login Successfully --> Disabled Basic Security
         public void LoginSuccess()
         {
             Taskbar.Show(); // |--> Taskbar Show --> Disabled Basic Security
             ShowDesktop();  // |--> Desktop Show --> Disabled Basic Security
             this.Hide();
             btn_lock.Enabled = true;
+            NotifyMessage("Bilgilendirme Metni", "GİRİŞ BAŞARILI , İYİ DERSLER", 1000);
         }
         public void SecurityBoard()
         {
@@ -288,23 +340,8 @@ namespace DERIN
         }
         // |----------------------------------------------------------------------------------------------------------------------------|
         // |--> Taskbar Hide & Show
-        private class Taskbar
-        {
-            [DllImport("user32.dll")]
-            private static extern int FindWindow(string className, string windowText);
-            [DllImport("user32.dll")]
-            private static extern int ShowWindow(int hwnd, int command);
-            [DllImport("user32.dll")]
-            public static extern int FindWindowEx(int parentHandle, int childAfter, string className, int windowTitle);
-            [DllImport("user32.dll")]
-            private static extern int GetDesktopWindow();
-            private const int SW_HIDE = 0;
-            private const int SW_SHOW = 1;
-            protected static int Handle { get { return FindWindow("Shell_TrayWnd", ""); } }
-            protected static int HandleOfStartButton { get { int handleOfDesktop = GetDesktopWindow(); int handleOfStartButton = FindWindowEx(handleOfDesktop, 0, "button", 0); return handleOfStartButton; } }
-            public static void Show() { ShowWindow(Handle, SW_SHOW); ShowWindow(HandleOfStartButton, SW_SHOW); }
-            public static void Hide() { ShowWindow(Handle, SW_HIDE); ShowWindow(HandleOfStartButton, SW_HIDE); }
-        }
+        private class Taskbar  {[DllImport("user32.dll")]
+        private static extern int FindWindow(string className, string windowText);[DllImport("user32.dll")]private static extern int ShowWindow(int hwnd, int command);[DllImport("user32.dll")]public static extern int FindWindowEx(int parentHandle, int childAfter, string className, int windowTitle);[DllImport("user32.dll")]private static extern int GetDesktopWindow();private const int SW_HIDE = 0;private const int SW_SHOW = 1;protected static int Handle { get { return FindWindow("Shell_TrayWnd", ""); } }protected static int HandleOfStartButton { get { int handleOfDesktop = GetDesktopWindow(); int handleOfStartButton = FindWindowEx(handleOfDesktop, 0, "button", 0); return handleOfStartButton; } }public static void Show() { ShowWindow(Handle, SW_SHOW); ShowWindow(HandleOfStartButton, SW_SHOW); }public static void Hide() { ShowWindow(Handle, SW_HIDE); ShowWindow(HandleOfStartButton, SW_HIDE); }}
         // |--> Taskbar Hide & Show
         // |----------------------------------------------------------------------------------------------------------------------------|
         // |--> Desktop Hide & Show

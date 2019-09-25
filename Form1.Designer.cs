@@ -51,6 +51,7 @@
             this.yöneticiPaneliToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.notify = new System.Windows.Forms.NotifyIcon(this.components);
+            this.powerchechtimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.btn_backspace)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.number_0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btn_clear)).BeginInit();
@@ -282,6 +283,12 @@
             this.notify.Text = "DERIN";
             this.notify.Visible = true;
             // 
+            // powerchechtimer
+            // 
+            this.powerchechtimer.Enabled = true;
+            this.powerchechtimer.Interval = 10000;
+            this.powerchechtimer.Tick += new System.EventHandler(this.Powerchechtimer_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -351,6 +358,7 @@
         private System.Windows.Forms.ToolStripMenuItem yöneticiPaneliToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip menu;
         private System.Windows.Forms.NotifyIcon notify;
+        private System.Windows.Forms.Timer powerchechtimer;
     }
 }
 
