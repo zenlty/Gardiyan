@@ -57,7 +57,9 @@ namespace DERIN
             this.Top = Screen.PrimaryScreen.WorkingArea.Bottom - this.Height; // Screen Height
             SyncingPin(); // Downloading  --> Syncing Pin
             runningProgram();
-
+            System.Threading.Thread.Sleep(1000);
+            MinimizeAll();
+            this.Show();
         }
 
         public void SyncingPin()
@@ -213,19 +215,20 @@ namespace DERIN
         private void locker()
         {
             numpad.Clear();
-            Taskbar.Hide();  // |--> Taskbar Hide for Security
-            HideDesktop();   // |--> Desktop Hide for Security
-                             //   KillProcess(); // |--> Process Kill Timer Enabled for Hard Security
-            MinimizeAll();
 
-            this.Hide();
+            SecurityBoard();
+            this.DesktopLocation = new Point(0, 0);
+            this.Height = 478; // Form Height
+            this.Width = 245; // Form Width
+            this.Left = Screen.PrimaryScreen.WorkingArea.Left; //- this.Width; // Screen Width
+            this.Top = Screen.PrimaryScreen.WorkingArea.Bottom - this.Height; // Screen Height
+            SyncingPin(); // Downloading  --> Syncing Pin
+            runningProgram();
             this.TopMost = true;
-
+            this.Focus();
+            this.BringToFront();
             this.Show();
-        //    this.Width = System.Windows.SystemParameters.PrimaryScreenWidth;
-
-         //   this.Height = System.Windows.SystemParameters.PrimaryScreenHeight;
-
+            btn_lock.Enabled = false;
         }
 
 
@@ -274,6 +277,7 @@ namespace DERIN
             Taskbar.Show(); // |--> Taskbar Show --> Disabled Basic Security
             ShowDesktop();  // |--> Desktop Show --> Disabled Basic Security
             this.Hide();
+            btn_lock.Enabled = true;
         }
         public void SecurityBoard()
         {
