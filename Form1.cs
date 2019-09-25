@@ -201,16 +201,31 @@ namespace DERIN
                 process.Start();
             }
         }
+        [DllImport("user32.dll")]
+
+        static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, int dwExtraInfo);
+        public static void MinimizeAll()
+        {
+            keybd_event(0x5B, 0, 0, 0);
+            keybd_event(0x4D, 0, 0, 0);
+            keybd_event(0x5B, 0, 0x2, 0);
+        }
         private void locker()
         {
             numpad.Clear();
             Taskbar.Hide();  // |--> Taskbar Hide for Security
             HideDesktop();   // |--> Desktop Hide for Security
                              //   KillProcess(); // |--> Process Kill Timer Enabled for Hard Security
-         //   Shell shellObject = new Shell();
-    //     //   shellObject.ToggleDesktop();
+            MinimizeAll();
+
             this.Hide();
+            this.TopMost = true;
+
             this.Show();
+        //    this.Width = System.Windows.SystemParameters.PrimaryScreenWidth;
+
+         //   this.Height = System.Windows.SystemParameters.PrimaryScreenHeight;
+
         }
 
 
@@ -265,8 +280,7 @@ namespace DERIN
             Taskbar.Hide();  // |--> Taskbar Hide for Security
             HideDesktop();   // |--> Desktop Hide for Security
             KillProcess(); // |--> Process Kill Timer Enabled for Hard Security
-            Shell shellObject = new Shell();
-            shellObject.ToggleDesktop();
+            MinimizeAll();
         }
         // |----------------------------------------------------------------------------------------------------------------------------|
         // |--> Taskbar Hide & Show

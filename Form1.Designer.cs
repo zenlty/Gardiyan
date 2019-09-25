@@ -238,28 +238,28 @@
             // ekranıGörüntüleToolStripMenuItem
             // 
             this.ekranıGörüntüleToolStripMenuItem.Name = "ekranıGörüntüleToolStripMenuItem";
-            this.ekranıGörüntüleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ekranıGörüntüleToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.ekranıGörüntüleToolStripMenuItem.Text = "DERIN\'i aç";
             this.ekranıGörüntüleToolStripMenuItem.Click += new System.EventHandler(this.EkranıGörüntüleToolStripMenuItem_Click);
             // 
             // tahtayıKilitleToolStripMenuItem
             // 
             this.tahtayıKilitleToolStripMenuItem.Name = "tahtayıKilitleToolStripMenuItem";
-            this.tahtayıKilitleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.tahtayıKilitleToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.tahtayıKilitleToolStripMenuItem.Text = "Tahtayı Kilitle";
             this.tahtayıKilitleToolStripMenuItem.Click += new System.EventHandler(this.TahtayıKilitleToolStripMenuItem_Click);
             // 
             // bilgisayarıKapatToolStripMenuItem
             // 
             this.bilgisayarıKapatToolStripMenuItem.Name = "bilgisayarıKapatToolStripMenuItem";
-            this.bilgisayarıKapatToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.bilgisayarıKapatToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.bilgisayarıKapatToolStripMenuItem.Text = "Bilgisayarı Kapat";
             this.bilgisayarıKapatToolStripMenuItem.Click += new System.EventHandler(this.BilgisayarıKapatToolStripMenuItem_Click);
             // 
             // yöneticiPaneliToolStripMenuItem
             // 
             this.yöneticiPaneliToolStripMenuItem.Name = "yöneticiPaneliToolStripMenuItem";
-            this.yöneticiPaneliToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.yöneticiPaneliToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.yöneticiPaneliToolStripMenuItem.Text = "Yönetici Paneli";
             // 
             // menu
@@ -281,7 +281,6 @@
             this.notify.Icon = ((System.Drawing.Icon)(resources.GetObject("notify.Icon")));
             this.notify.Text = "DERIN";
             this.notify.Visible = true;
-            this.notify.Click += new System.EventHandler(this.Notify_Click);
             // 
             // Form1
             // 
