@@ -53,7 +53,7 @@ namespace DERIN
             this.DesktopLocation = new Point(0, 0);
             this.Height = 478; // Form Height
             this.Width = 245; // Form Width
-            this.Left = Screen.PrimaryScreen.WorkingArea.Right - this.Width; // Screen Width
+            this.Left = Screen.PrimaryScreen.WorkingArea.Left; //- this.Width; // Screen Width
             this.Top = Screen.PrimaryScreen.WorkingArea.Bottom - this.Height; // Screen Height
             SyncingPin(); // Downloading  --> Syncing Pin
             runningProgram();
