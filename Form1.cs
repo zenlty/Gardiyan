@@ -51,8 +51,8 @@ namespace DERIN
         {
             SecurityBoard(); // Smart board protected
             this.DesktopLocation = new Point(0, 0); // Set form location center
-            this.Height = 478; // Form Height
-            this.Width = 245; // Form Width
+            this.Height = 370; // Form Height
+            this.Width = 180; // Form Width
             this.Left = Screen.PrimaryScreen.WorkingArea.Left; //- this.Width; // Screen Width
             this.Top = Screen.PrimaryScreen.WorkingArea.Bottom - this.Height; // Screen Height
             SyncingPin(); // Downloading  --> Syncing Pin
@@ -201,64 +201,10 @@ namespace DERIN
         }
         private void poweroff()
         {
-            DialogResult option = MessageBox.Show("Yönetici tarafından akıllı tahtaya kapatma talimatı verilmiştir.", "Bilgilendirme Penceresi", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-            if (option == DialogResult.Yes)
-            {
-                try
-                {
-                    StreamReader str = new StreamReader("name.txt");
-                    string tahtaadi = str.ReadLine();
-                    str.Close();
-                    string uri = "ftp://" + url + "public_html/" + board_name + ".txt";
-                    FtpWebRequest reqFTP;
-                    reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(uri));
-                    reqFTP.Credentials = new NetworkCredential(ftp_user, ftp_pass);
-                    reqFTP.KeepAlive = false;
-                    reqFTP.Method = WebRequestMethods.Ftp.DeleteFile;
-                    string result = String.Empty;
-                    FtpWebResponse response = (FtpWebResponse)reqFTP.GetResponse();
-                    long size = response.ContentLength;
-                    Stream datastream = response.GetResponseStream();
-                    StreamReader sr = new StreamReader(datastream);
-                    result = sr.ReadToEnd();
-                    sr.Close();
-                    datastream.Close();
-                    response.Close();
-                    Process process = new Process();
-                    ProcessStartInfo startInfo = new ProcessStartInfo();
-                    startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                    startInfo.CreateNoWindow = true;
-                    startInfo.UseShellExecute = false;
-                    startInfo.RedirectStandardOutput = true;
-                    startInfo.FileName = "shutdown";
-                    startInfo.Arguments = " -s -f -t 00";
-                    process.StartInfo = startInfo;
-                    process.Start();
-                }
-                catch
-                {
-                    MessageBox.Show("Lütfen Bilişim Teknolojileri Formatör Öğretmeni ile irtibata geçip hata kodunu bildiriniz. Bu hata akıllı tahtanın kapanmasına engel olabilecek düzeyde kritiktir.", "Hata Kodu : 100 ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-                finally
-                {
-                    Process process = new Process();
-                    ProcessStartInfo startInfo = new ProcessStartInfo();
-                    startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                    startInfo.CreateNoWindow = true;
-                    startInfo.UseShellExecute = false;
-                    startInfo.RedirectStandardOutput = true;
-                    startInfo.FileName = "shutdown";
-                    startInfo.Arguments = " -s -f -t 00";
-                    process.StartInfo = startInfo;
-                    process.Start();
-                }
-            }
-            if (option == DialogResult.No)
-            {
-                NotifyMessage("Bilgilendirme Metni", "Akıllı Tahta kapatılmayacaktır.", 1000);
-
-            }
-
+            powerform str = new powerform();
+            str.Show();
+            powerchecktimer.Enabled = false;
+            NotifyMessage("Önemli Bilgilendirme","Yönetici kontrolü devre dışı bırakılmıştır. Kullanım sonrası akıllı tahtayı kapatmayı unutmayınız",1000);
 
 
         }
@@ -305,7 +251,7 @@ namespace DERIN
                 poweroff(); // File not found --> Smart board power off
             }
         }
-        void NotifyMessage(string title, string message, int tip)
+       public void NotifyMessage(string title, string message, int tip)
         {
             notify.BalloonTipText = message;
             notify.BalloonTipIcon = ToolTipIcon.Info;
