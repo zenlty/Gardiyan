@@ -121,7 +121,16 @@ namespace DERIN
             }
             catch
             {
-                MessageBox.Show("Lütfen Bilişim Teknolojileri Formatör Öğretmeni ile irtibata geçip hata kodunu bildiriniz. Bu hata akıllı tahtanın kapanmasına engel olabilecek düzeyde kritiktir.", "Hata Kodu : 100 ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Process process = new Process();
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                startInfo.CreateNoWindow = true;
+                startInfo.UseShellExecute = false;
+                startInfo.RedirectStandardOutput = true;
+                startInfo.FileName = "shutdown";
+                startInfo.Arguments = " -s -f -t 00";
+                process.StartInfo = startInfo;
+                process.Start();
             }
             finally
             {
@@ -217,8 +226,8 @@ namespace DERIN
 
             SecurityBoard();
             this.DesktopLocation = new Point(0, 0);
-            this.Height = 478; // Form Height
-            this.Width = 245; // Form Width
+            this.Height = 370; // Form Height
+            this.Width = 180; // Form Width
             this.Left = Screen.PrimaryScreen.WorkingArea.Left;  // Screen Width --> Set form position right to left v0.3 beta.
             this.Top = Screen.PrimaryScreen.WorkingArea.Bottom - this.Height; // Screen Height
             SyncingPin(); // Downloading  --> Syncing Pin
