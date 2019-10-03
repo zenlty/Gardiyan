@@ -13,6 +13,7 @@ using Shell32;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Win32;
 
 namespace DERIN
 {
@@ -28,7 +29,8 @@ namespace DERIN
               ftp_user = "school@zenlty.com.tr.ht",
               ftp_pass = "Kilavya59",
               hash = "edebalianadolulisesi_derin",
-              board_name;
+              board_name,
+              program_name = "DERIN";
         //|------------------------------------------------------------------------->set number & button click event
         private void Number_1_Click(object sender, EventArgs e) => numpad.Text += 1;
         private void Number_2_Click(object sender, EventArgs e) => numpad.Text += 2;
@@ -46,6 +48,17 @@ namespace DERIN
         public Form1()
         {
             InitializeComponent();
+            try
+            {
+                RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
+                if (key.GetValue(program_name).ToString() == "\"" + Application.ExecutablePath + "\"")
+                { 
+                }
+            }
+            catch
+            {
+
+            }
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -121,6 +134,24 @@ namespace DERIN
             }
             catch
             {
+                StreamReader str = new StreamReader("name.txt");
+                string tahtaadi = str.ReadLine();
+                str.Close();
+                string uri = "ftp://" + url + "public_html/" + board_name + ".txt";
+                FtpWebRequest reqFTP;
+                reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(uri));
+                reqFTP.Credentials = new NetworkCredential(ftp_user, ftp_pass);
+                reqFTP.KeepAlive = false;
+                reqFTP.Method = WebRequestMethods.Ftp.DeleteFile;
+                string result = String.Empty;
+                FtpWebResponse response = (FtpWebResponse)reqFTP.GetResponse();
+                long size = response.ContentLength;
+                Stream datastream = response.GetResponseStream();
+                StreamReader sr = new StreamReader(datastream);
+                result = sr.ReadToEnd();
+                sr.Close();
+                datastream.Close();
+                response.Close();
                 Process process = new Process();
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.WindowStyle = ProcessWindowStyle.Hidden;
@@ -275,6 +306,11 @@ namespace DERIN
         private void Powerchechtimer_Tick(object sender, EventArgs e)
         {
             powercheck();
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
         }
 
         private void Numpad_TextChanged(object sender, EventArgs e) { if (pin == numpad.Text) { LoginSuccess(); } } // Login Successfully --> Disabled Basic Security

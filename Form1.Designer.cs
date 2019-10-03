@@ -309,11 +309,15 @@
             this.Controls.Add(this.numpad);
             this.Controls.Add(this.btn_poweroff);
             this.Controls.Add(this.btn_lock);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "DERIN";
             this.TopMost = true;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.btn_backspace)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.number_0)).EndInit();
