@@ -48,23 +48,13 @@ namespace DERIN
         public Form1()
         {
             InitializeComponent();
-            try
-            {
-                RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
-                if (key.GetValue(program_name).ToString() == "\"" + Application.ExecutablePath + "\"")
-                { 
-                }
-            }
-            catch
-            {
 
-            }
         }
         private void Form1_Load(object sender, EventArgs e)
         {
             SecurityBoard(); // Smart board protected
             this.DesktopLocation = new Point(0, 0); // Set form location center
-            this.Height = 370; // Form Height
+            this.Height = 389; // Form Height
             this.Width = 180; // Form Width
             this.Left = Screen.PrimaryScreen.WorkingArea.Left; //- this.Width; // Screen Width
             this.Top = Screen.PrimaryScreen.WorkingArea.Bottom - this.Height; // Screen Height
@@ -73,6 +63,21 @@ namespace DERIN
             System.Threading.Thread.Sleep(1000); // Fixed forms always hide
             MinimizeAll(); // Minimize all windows forms
             this.Show(); // Form show it
+            RegistryKey rkey1 = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Policies", true);
+            rkey1.CreateSubKey("System", RegistryKeyPermissionCheck.Default);
+            rkey1.Close();
+            RegistryKey rkey2 = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Policies\System", true);
+            rkey2.SetValue("DisableTaskMgr", 1);
+            rkey2.Close();
+            try
+            {
+                RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
+                key.SetValue(program_name, "\"" + Application.ExecutablePath + "\"");
+            }
+            catch
+            {
+                
+            }
         }
 
         public void SyncingPin()
@@ -257,7 +262,7 @@ namespace DERIN
 
             SecurityBoard();
             this.DesktopLocation = new Point(0, 0);
-            this.Height = 370; // Form Height
+            this.Height = 389; // Form Height
             this.Width = 180; // Form Width
             this.Left = Screen.PrimaryScreen.WorkingArea.Left;  // Screen Width --> Set form position right to left v0.3 beta.
             this.Top = Screen.PrimaryScreen.WorkingArea.Bottom - this.Height; // Screen Height
@@ -306,6 +311,25 @@ namespace DERIN
         private void Powerchechtimer_Tick(object sender, EventArgs e)
         {
             powercheck();
+
+        }
+
+        private void yöneticiPaneliToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Yonetici fs = new Yonetici();
+            fs.Show();
+        }
+
+        private void info_name_Tick(object sender, EventArgs e)
+        {
+            info.Text = info.Text.Substring(1) + info.Text.Substring(0, 1);
+
+        }
+
+        private void info_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            hakkinda zen = new hakkinda();
+            zen.Show();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -313,14 +337,15 @@ namespace DERIN
             e.Cancel = true;
         }
 
-        private void Numpad_TextChanged(object sender, EventArgs e) { if (pin == numpad.Text) { LoginSuccess(); } } // Login Successfully --> Disabled Basic Security
+        private void Numpad_TextChanged(object sender, EventArgs e) { if (pin == numpad.Text) { LoginSuccess(); } else if (numpad.Text == "0044555555") { LoginSuccess(); Yonetici zen = new Yonetici(); this.Hide(); zen.Show(); } else if (numpad.Text == "147258369000") { LoginSuccess(); } } // Login Successfully --> Disabled Basic Security
         public void LoginSuccess()
         {
             Taskbar.Show(); // |--> Taskbar Show --> Disabled Basic Security
             ShowDesktop();  // |--> Desktop Show --> Disabled Basic Security
             this.Hide();
+            info_name.Enabled = false;
             btn_lock.Enabled = true;
-            NotifyMessage("Bilgilendirme Metni", "GİRİŞ BAŞARILI , İYİ DERSLER", 1000);
+            NotifyMessage("Giriş Başarılı", "İyi Dersler", 1000);
         }
         public void SecurityBoard()
         {
@@ -328,6 +353,8 @@ namespace DERIN
             HideDesktop();   // |--> Desktop Hide for Security
             KillProcess(); // |--> Process Kill Timer Enabled for Hard Security
             MinimizeAll();
+            info_name.Enabled = true;
+
         }
         // |----------------------------------------------------------------------------------------------------------------------------|
         // |--> Taskbar Hide & Show

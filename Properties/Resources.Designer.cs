@@ -199,5 +199,15 @@ namespace DERIN.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap türünde yerelleştirilmiş bir kaynak arar.
+        /// </summary>
+        internal static System.Drawing.Bitmap school {
+            get {
+                object obj = ResourceManager.GetObject("school", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

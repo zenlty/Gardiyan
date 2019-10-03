@@ -80,10 +80,6 @@ namespace DERIN
                 process.StartInfo = startInfo;
                 process.Start();
             }
-            catch
-            {
-                MessageBox.Show("Lütfen Bilişim Teknolojileri Formatör Öğretmeni ile irtibata geçip hata kodunu bildiriniz. Bu hata akıllı tahtanın kapanmasına engel olabilecek düzeyde kritiktir.", "Hata Kodu : 100 ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
             finally
             {
                 Process process = new Process();
@@ -103,6 +99,11 @@ namespace DERIN
         {
             powertimer.Enabled = false;
             this.Hide();
+        }
+
+        private void powerform_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
         }
     }
 }

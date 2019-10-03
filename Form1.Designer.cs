@@ -31,6 +31,15 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.numpad = new System.Windows.Forms.TextBox();
+            this.ekranıGörüntüleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tahtayıKilitleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bilgisayarıKapatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.yöneticiPaneliToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.notify = new System.Windows.Forms.NotifyIcon(this.components);
+            this.powerchecktimer = new System.Windows.Forms.Timer(this.components);
+            this.info = new System.Windows.Forms.LinkLabel();
+            this.info_name = new System.Windows.Forms.Timer(this.components);
             this.btn_backspace = new System.Windows.Forms.PictureBox();
             this.number_0 = new System.Windows.Forms.PictureBox();
             this.btn_clear = new System.Windows.Forms.PictureBox();
@@ -45,13 +54,7 @@
             this.number_1 = new System.Windows.Forms.PictureBox();
             this.btn_poweroff = new System.Windows.Forms.PictureBox();
             this.btn_lock = new System.Windows.Forms.PictureBox();
-            this.ekranıGörüntüleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tahtayıKilitleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.bilgisayarıKapatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.yöneticiPaneliToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.notify = new System.Windows.Forms.NotifyIcon(this.components);
-            this.powerchecktimer = new System.Windows.Forms.Timer(this.components);
+            this.menu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btn_backspace)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.number_0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btn_clear)).BeginInit();
@@ -66,7 +69,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.number_1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btn_poweroff)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btn_lock)).BeginInit();
-            this.menu.SuspendLayout();
             this.SuspendLayout();
             // 
             // numpad
@@ -78,9 +80,84 @@
             this.numpad.Location = new System.Drawing.Point(7, 93);
             this.numpad.Multiline = true;
             this.numpad.Name = "numpad";
+            this.numpad.PasswordChar = '*';
             this.numpad.Size = new System.Drawing.Size(156, 21);
             this.numpad.TabIndex = 2;
             this.numpad.TextChanged += new System.EventHandler(this.Numpad_TextChanged);
+            // 
+            // ekranıGörüntüleToolStripMenuItem
+            // 
+            this.ekranıGörüntüleToolStripMenuItem.Name = "ekranıGörüntüleToolStripMenuItem";
+            this.ekranıGörüntüleToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.ekranıGörüntüleToolStripMenuItem.Text = "DERIN\'i aç";
+            this.ekranıGörüntüleToolStripMenuItem.Click += new System.EventHandler(this.EkranıGörüntüleToolStripMenuItem_Click);
+            // 
+            // tahtayıKilitleToolStripMenuItem
+            // 
+            this.tahtayıKilitleToolStripMenuItem.Name = "tahtayıKilitleToolStripMenuItem";
+            this.tahtayıKilitleToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.tahtayıKilitleToolStripMenuItem.Text = "Tahtayı Kilitle";
+            this.tahtayıKilitleToolStripMenuItem.Click += new System.EventHandler(this.TahtayıKilitleToolStripMenuItem_Click);
+            // 
+            // bilgisayarıKapatToolStripMenuItem
+            // 
+            this.bilgisayarıKapatToolStripMenuItem.Name = "bilgisayarıKapatToolStripMenuItem";
+            this.bilgisayarıKapatToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.bilgisayarıKapatToolStripMenuItem.Text = "Bilgisayarı Kapat";
+            this.bilgisayarıKapatToolStripMenuItem.Click += new System.EventHandler(this.BilgisayarıKapatToolStripMenuItem_Click);
+            // 
+            // yöneticiPaneliToolStripMenuItem
+            // 
+            this.yöneticiPaneliToolStripMenuItem.Name = "yöneticiPaneliToolStripMenuItem";
+            this.yöneticiPaneliToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.yöneticiPaneliToolStripMenuItem.Text = "Yönetici Paneli";
+            this.yöneticiPaneliToolStripMenuItem.Click += new System.EventHandler(this.yöneticiPaneliToolStripMenuItem_Click);
+            // 
+            // menu
+            // 
+            this.menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ekranıGörüntüleToolStripMenuItem,
+            this.tahtayıKilitleToolStripMenuItem,
+            this.bilgisayarıKapatToolStripMenuItem,
+            this.yöneticiPaneliToolStripMenuItem});
+            this.menu.Name = "menu";
+            this.menu.Size = new System.Drawing.Size(161, 92);
+            // 
+            // notify
+            // 
+            this.notify.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.notify.BalloonTipText = "DERIN";
+            this.notify.BalloonTipTitle = "DERIN";
+            this.notify.ContextMenuStrip = this.menu;
+            this.notify.Icon = ((System.Drawing.Icon)(resources.GetObject("notify.Icon")));
+            this.notify.Text = "DERIN";
+            this.notify.Visible = true;
+            // 
+            // powerchecktimer
+            // 
+            this.powerchecktimer.Enabled = true;
+            this.powerchecktimer.Interval = 10000;
+            this.powerchecktimer.Tick += new System.EventHandler(this.Powerchechtimer_Tick);
+            // 
+            // info
+            // 
+            this.info.AutoSize = true;
+            this.info.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.info.LinkColor = System.Drawing.Color.Black;
+            this.info.LinkVisited = true;
+            this.info.Location = new System.Drawing.Point(2, 333);
+            this.info.Name = "info";
+            this.info.Size = new System.Drawing.Size(184, 13);
+            this.info.TabIndex = 15;
+            this.info.TabStop = true;
+            this.info.Text = "Developed by Azat Barış MIZRAKLI | ";
+            this.info.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.info_LinkClicked);
+            // 
+            // info_name
+            // 
+            this.info_name.Enabled = true;
+            this.info_name.Interval = 220;
+            this.info_name.Tick += new System.EventHandler(this.info_name_Tick);
             // 
             // btn_backspace
             // 
@@ -236,64 +313,12 @@
             this.btn_lock.TabStop = false;
             this.btn_lock.Click += new System.EventHandler(this.Btn_lock_Click);
             // 
-            // ekranıGörüntüleToolStripMenuItem
-            // 
-            this.ekranıGörüntüleToolStripMenuItem.Name = "ekranıGörüntüleToolStripMenuItem";
-            this.ekranıGörüntüleToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
-            this.ekranıGörüntüleToolStripMenuItem.Text = "DERIN\'i aç";
-            this.ekranıGörüntüleToolStripMenuItem.Click += new System.EventHandler(this.EkranıGörüntüleToolStripMenuItem_Click);
-            // 
-            // tahtayıKilitleToolStripMenuItem
-            // 
-            this.tahtayıKilitleToolStripMenuItem.Name = "tahtayıKilitleToolStripMenuItem";
-            this.tahtayıKilitleToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
-            this.tahtayıKilitleToolStripMenuItem.Text = "Tahtayı Kilitle";
-            this.tahtayıKilitleToolStripMenuItem.Click += new System.EventHandler(this.TahtayıKilitleToolStripMenuItem_Click);
-            // 
-            // bilgisayarıKapatToolStripMenuItem
-            // 
-            this.bilgisayarıKapatToolStripMenuItem.Name = "bilgisayarıKapatToolStripMenuItem";
-            this.bilgisayarıKapatToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
-            this.bilgisayarıKapatToolStripMenuItem.Text = "Bilgisayarı Kapat";
-            this.bilgisayarıKapatToolStripMenuItem.Click += new System.EventHandler(this.BilgisayarıKapatToolStripMenuItem_Click);
-            // 
-            // yöneticiPaneliToolStripMenuItem
-            // 
-            this.yöneticiPaneliToolStripMenuItem.Name = "yöneticiPaneliToolStripMenuItem";
-            this.yöneticiPaneliToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
-            this.yöneticiPaneliToolStripMenuItem.Text = "Yönetici Paneli";
-            // 
-            // menu
-            // 
-            this.menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ekranıGörüntüleToolStripMenuItem,
-            this.tahtayıKilitleToolStripMenuItem,
-            this.bilgisayarıKapatToolStripMenuItem,
-            this.yöneticiPaneliToolStripMenuItem});
-            this.menu.Name = "menu";
-            this.menu.Size = new System.Drawing.Size(161, 92);
-            // 
-            // notify
-            // 
-            this.notify.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
-            this.notify.BalloonTipText = "DERIN";
-            this.notify.BalloonTipTitle = "DERIN";
-            this.notify.ContextMenuStrip = this.menu;
-            this.notify.Icon = ((System.Drawing.Icon)(resources.GetObject("notify.Icon")));
-            this.notify.Text = "DERIN";
-            this.notify.Visible = true;
-            // 
-            // powerchecktimer
-            // 
-            this.powerchecktimer.Enabled = true;
-            this.powerchecktimer.Interval = 10000;
-            this.powerchecktimer.Tick += new System.EventHandler(this.Powerchechtimer_Tick);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(164, 331);
+            this.ClientSize = new System.Drawing.Size(164, 350);
+            this.Controls.Add(this.info);
             this.Controls.Add(this.btn_backspace);
             this.Controls.Add(this.number_0);
             this.Controls.Add(this.btn_clear);
@@ -319,6 +344,7 @@
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.menu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.btn_backspace)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.number_0)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btn_clear)).EndInit();
@@ -333,7 +359,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.number_1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btn_poweroff)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btn_lock)).EndInit();
-            this.menu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -363,6 +388,8 @@
         private System.Windows.Forms.ContextMenuStrip menu;
         public System.Windows.Forms.NotifyIcon notify;
         public System.Windows.Forms.Timer powerchecktimer;
+        private System.Windows.Forms.LinkLabel info;
+        private System.Windows.Forms.Timer info_name;
     }
 }
 
