@@ -31,10 +31,10 @@
             this.components = new System.ComponentModel.Container();
             this.powertimer = new System.Windows.Forms.Timer(this.components);
             this.nyX_Theme1 = new CS_ClassLibraryTester.NYX_Theme();
-            this.sure = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.sure = new System.Windows.Forms.Label();
             this.nyX_Theme1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -69,42 +69,7 @@
             this.nyX_Theme1.Text = "Akıllı Tahta Kapanıyor ";
             this.nyX_Theme1.TransparencyKey = System.Drawing.Color.Fuchsia;
             this.nyX_Theme1.Transparent = false;
-            // 
-            // sure
-            // 
-            this.sure.AutoSize = true;
-            this.sure.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.sure.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.sure.ForeColor = System.Drawing.Color.White;
-            this.sure.Location = new System.Drawing.Point(227, 28);
-            this.sure.Name = "sure";
-            this.sure.Size = new System.Drawing.Size(27, 20);
-            this.sure.TabIndex = 10;
-            this.sure.Text = "15";
-            // 
-            // button2
-            // 
-            this.button2.BackColor = System.Drawing.Color.SeaGreen;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(148, 51);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(118, 37);
-            this.button2.TabIndex = 9;
-            this.button2.Text = "KAPATMA";
-            this.button2.UseVisualStyleBackColor = false;
-            // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.Color.DarkRed;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(28, 51);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(118, 38);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "KAPAT";
-            this.button1.UseVisualStyleBackColor = false;
+            this.nyX_Theme1.Click += new System.EventHandler(this.Powerform_Load);
             // 
             // label1
             // 
@@ -117,6 +82,44 @@
             this.label1.Size = new System.Drawing.Size(194, 20);
             this.label1.TabIndex = 11;
             this.label1.Text = "Saniye içinde kapatılacak :\r\n";
+            // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.SeaGreen;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button2.ForeColor = System.Drawing.Color.White;
+            this.button2.Location = new System.Drawing.Point(148, 51);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(118, 37);
+            this.button2.TabIndex = 9;
+            this.button2.Text = "KAPATMA";
+            this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.Button2_Click);
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.DarkRed;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button1.ForeColor = System.Drawing.Color.White;
+            this.button1.Location = new System.Drawing.Point(28, 51);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(118, 38);
+            this.button1.TabIndex = 8;
+            this.button1.Text = "KAPAT";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.Button1_Click);
+            // 
+            // sure
+            // 
+            this.sure.AutoSize = true;
+            this.sure.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.sure.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.sure.ForeColor = System.Drawing.Color.White;
+            this.sure.Location = new System.Drawing.Point(227, 28);
+            this.sure.Name = "sure";
+            this.sure.Size = new System.Drawing.Size(27, 20);
+            this.sure.TabIndex = 10;
+            this.sure.Text = "15";
             // 
             // powerform
             // 

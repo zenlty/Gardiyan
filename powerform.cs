@@ -24,7 +24,7 @@ namespace DERIN
         {
                 sayac--;
                 sure.Text = sayac.ToString();
-            this.Text = sayac.ToString();
+       //     this.Text = sayac.ToString();
                 if (sayac == 0)
                 {
                     powertimer.Stop();
@@ -37,7 +37,7 @@ namespace DERIN
         {
             DialogResult option = MessageBox.Show("Yönetici tarafından akıllı tahta kapatma talimatı verilmiştir. 15 saniye içerisinde iptal etmediğiniz takdirde akıllı tahta kapanacaktır.", "Bilgilendirme Penceresi", MessageBoxButtons.OK, MessageBoxIcon.Information);
             powertimer.Enabled = true;
-            sayac = 10;
+            sayac = 15;
 
         }
 
