@@ -1,4 +1,4 @@
-﻿namespace DERIN
+﻿namespace GARDIYAN
 {
     partial class Form1
     {
@@ -37,7 +37,6 @@
             this.yöneticiPaneliToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.notify = new System.Windows.Forms.NotifyIcon(this.components);
-            this.powerchecktimer = new System.Windows.Forms.Timer(this.components);
             this.info = new System.Windows.Forms.LinkLabel();
             this.info_name = new System.Windows.Forms.Timer(this.components);
             this.btn_backspace = new System.Windows.Forms.PictureBox();
@@ -133,12 +132,6 @@
             this.notify.Text = "DERIN";
             this.notify.Visible = true;
             // 
-            // powerchecktimer
-            // 
-            this.powerchecktimer.Enabled = true;
-            this.powerchecktimer.Interval = 10000;
-            this.powerchecktimer.Tick += new System.EventHandler(this.Powerchechtimer_Tick);
-            // 
             // info
             // 
             this.info.AutoSize = true;
@@ -161,7 +154,7 @@
             // 
             // btn_backspace
             // 
-            this.btn_backspace.Image = global::DERIN.Properties.Resources.BS;
+            this.btn_backspace.Image = global::GARDIYAN.Properties.Resources.BS;
             this.btn_backspace.Location = new System.Drawing.Point(112, 278);
             this.btn_backspace.Name = "btn_backspace";
             this.btn_backspace.Size = new System.Drawing.Size(45, 45);
@@ -172,7 +165,7 @@
             // 
             // number_0
             // 
-            this.number_0.Image = global::DERIN.Properties.Resources._0;
+            this.number_0.Image = global::GARDIYAN.Properties.Resources._0;
             this.number_0.Location = new System.Drawing.Point(61, 278);
             this.number_0.Name = "number_0";
             this.number_0.Size = new System.Drawing.Size(45, 45);
@@ -183,7 +176,7 @@
             // 
             // btn_clear
             // 
-            this.btn_clear.Image = global::DERIN.Properties.Resources.C;
+            this.btn_clear.Image = global::GARDIYAN.Properties.Resources.C;
             this.btn_clear.Location = new System.Drawing.Point(6, 278);
             this.btn_clear.Name = "btn_clear";
             this.btn_clear.Size = new System.Drawing.Size(45, 45);
@@ -194,7 +187,7 @@
             // 
             // number_9
             // 
-            this.number_9.Image = global::DERIN.Properties.Resources._9;
+            this.number_9.Image = global::GARDIYAN.Properties.Resources._9;
             this.number_9.Location = new System.Drawing.Point(112, 227);
             this.number_9.Name = "number_9";
             this.number_9.Size = new System.Drawing.Size(45, 45);
@@ -205,7 +198,7 @@
             // 
             // number_8
             // 
-            this.number_8.Image = global::DERIN.Properties.Resources._8;
+            this.number_8.Image = global::GARDIYAN.Properties.Resources._8;
             this.number_8.Location = new System.Drawing.Point(61, 227);
             this.number_8.Name = "number_8";
             this.number_8.Size = new System.Drawing.Size(45, 45);
@@ -216,7 +209,7 @@
             // 
             // number_7
             // 
-            this.number_7.Image = global::DERIN.Properties.Resources._7;
+            this.number_7.Image = global::GARDIYAN.Properties.Resources._7;
             this.number_7.Location = new System.Drawing.Point(6, 227);
             this.number_7.Name = "number_7";
             this.number_7.Size = new System.Drawing.Size(45, 45);
@@ -227,7 +220,7 @@
             // 
             // number_6
             // 
-            this.number_6.Image = global::DERIN.Properties.Resources._6;
+            this.number_6.Image = global::GARDIYAN.Properties.Resources._6;
             this.number_6.Location = new System.Drawing.Point(112, 176);
             this.number_6.Name = "number_6";
             this.number_6.Size = new System.Drawing.Size(45, 45);
@@ -238,7 +231,7 @@
             // 
             // number_5
             // 
-            this.number_5.Image = global::DERIN.Properties.Resources._5;
+            this.number_5.Image = global::GARDIYAN.Properties.Resources._5;
             this.number_5.Location = new System.Drawing.Point(61, 176);
             this.number_5.Name = "number_5";
             this.number_5.Size = new System.Drawing.Size(45, 45);
@@ -249,7 +242,7 @@
             // 
             // number_4
             // 
-            this.number_4.Image = global::DERIN.Properties.Resources._4;
+            this.number_4.Image = global::GARDIYAN.Properties.Resources._4;
             this.number_4.Location = new System.Drawing.Point(6, 176);
             this.number_4.Name = "number_4";
             this.number_4.Size = new System.Drawing.Size(45, 45);
@@ -260,7 +253,7 @@
             // 
             // number_3
             // 
-            this.number_3.Image = global::DERIN.Properties.Resources._3;
+            this.number_3.Image = global::GARDIYAN.Properties.Resources._3;
             this.number_3.Location = new System.Drawing.Point(112, 125);
             this.number_3.Name = "number_3";
             this.number_3.Size = new System.Drawing.Size(45, 45);
@@ -271,7 +264,7 @@
             // 
             // number_2
             // 
-            this.number_2.Image = global::DERIN.Properties.Resources._2;
+            this.number_2.Image = global::GARDIYAN.Properties.Resources._2;
             this.number_2.Location = new System.Drawing.Point(61, 125);
             this.number_2.Name = "number_2";
             this.number_2.Size = new System.Drawing.Size(45, 45);
@@ -282,7 +275,7 @@
             // 
             // number_1
             // 
-            this.number_1.Image = global::DERIN.Properties.Resources._1;
+            this.number_1.Image = global::GARDIYAN.Properties.Resources._1;
             this.number_1.Location = new System.Drawing.Point(7, 125);
             this.number_1.Name = "number_1";
             this.number_1.Size = new System.Drawing.Size(45, 45);
@@ -304,7 +297,7 @@
             // 
             // btn_lock
             // 
-            this.btn_lock.Image = global::DERIN.Properties.Resources.padlock;
+            this.btn_lock.Image = global::GARDIYAN.Properties.Resources.padlock;
             this.btn_lock.Location = new System.Drawing.Point(6, 12);
             this.btn_lock.Name = "btn_lock";
             this.btn_lock.Size = new System.Drawing.Size(75, 75);
@@ -340,7 +333,7 @@
             this.MinimizeBox = false;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "DERIN";
+            this.Text = "GARDİYAN";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -387,7 +380,6 @@
         private System.Windows.Forms.ToolStripMenuItem yöneticiPaneliToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip menu;
         public System.Windows.Forms.NotifyIcon notify;
-        public System.Windows.Forms.Timer powerchecktimer;
         private System.Windows.Forms.LinkLabel info;
         private System.Windows.Forms.Timer info_name;
     }

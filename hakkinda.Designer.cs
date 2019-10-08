@@ -1,4 +1,4 @@
-﻿namespace DERIN
+﻿namespace GARDIYAN
 {
     partial class hakkinda
     {
@@ -65,7 +65,7 @@
             this.nyX_Theme1.SmartBounds = true;
             this.nyX_Theme1.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.nyX_Theme1.TabIndex = 0;
-            this.nyX_Theme1.Text = "DERIN Hakkında";
+            this.nyX_Theme1.Text = "GARDİYAN Hakkında";
             this.nyX_Theme1.TransparencyKey = System.Drawing.Color.Fuchsia;
             this.nyX_Theme1.Transparent = false;
             this.nyX_Theme1.Click += new System.EventHandler(this.nyX_Theme1_Click);
@@ -96,7 +96,7 @@
             this.nyX_Button4.NoRounding = false;
             this.nyX_Button4.Size = new System.Drawing.Size(369, 25);
             this.nyX_Button4.TabIndex = 5;
-            this.nyX_Button4.Text = "Copyright © 2019 - DERIN Buıid v0.8";
+            this.nyX_Button4.Text = "Copyright © 2019 - GARDİYAN Build v0.8";
             this.nyX_Button4.Transparent = false;
             // 
             // nyX_Button3
@@ -147,7 +147,7 @@
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.pictureBox1.Image = global::DERIN.Properties.Resources.school;
+            this.pictureBox1.Image = global::GARDIYAN.Properties.Resources.school;
             this.pictureBox1.Location = new System.Drawing.Point(10, 31);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(112, 109);

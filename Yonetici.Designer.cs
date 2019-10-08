@@ -1,4 +1,4 @@
-﻿namespace DERIN
+﻿namespace GARDIYAN
 {
     partial class Yonetici
     {

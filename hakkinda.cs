@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace DERIN
+namespace GARDIYAN
 {
     public partial class hakkinda : Form
     {

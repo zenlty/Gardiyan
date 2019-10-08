@@ -15,22 +15,20 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Win32;
 
-namespace DERIN
+namespace GARDIYAN
 {
     public partial class Form1 : Form
     {
         public static string
-              appPath = Application.StartupPath + "\\",
-              http = "http://", //URL First address
-              url = "zenlty.com.tr.ht/", //Web address
-              pin_name = "pin.txt", // Pin Location
-              pin,  // Smart Board Login Pin
-              admin__pin, // Administrator Pin
-              ftp_user = "school@zenlty.com.tr.ht",
-              ftp_pass = "Kilavya59",
-              hash = "edebalianadolulisesi_derin",
-              board_name,
-              program_name = "DERIN";
+            appPath = Application.StartupPath + "\\",
+            pin_name = "pin.txt", // Pin Location
+            pin,  // Smart Board Login Pin
+            admin__pin, // Administrator Pin
+            hash = "edebalianadolulisesi_derin",
+            board_name,
+            time,
+            git_link = "https://raw.githubusercontent.com/smartgardiyan/Gardiyan/master/",
+            program_name = "GARDİYAN";
         //|------------------------------------------------------------------------->set number & button click event
         private void Number_1_Click(object sender, EventArgs e) => numpad.Text += 1;
         private void Number_2_Click(object sender, EventArgs e) => numpad.Text += 2;
@@ -59,32 +57,16 @@ namespace DERIN
             this.Left = Screen.PrimaryScreen.WorkingArea.Left; //- this.Width; // Screen Width
             this.Top = Screen.PrimaryScreen.WorkingArea.Bottom - this.Height; // Screen Height
             SyncingPin(); // Downloading  --> Syncing Pin
-            runningProgram(); // Upload FTP --> Board Name
             System.Threading.Thread.Sleep(1000); // Fixed forms always hide
             MinimizeAll(); // Minimize all windows forms
             this.Show(); // Form show it
-            RegistryKey rkey1 = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Policies", true);
-            rkey1.CreateSubKey("System", RegistryKeyPermissionCheck.Default);
-            rkey1.Close();
-            RegistryKey rkey2 = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Policies\System", true);
-            rkey2.SetValue("DisableTaskMgr", 1);
-            rkey2.Close();
-            try
-            {
-                RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
-                key.SetValue(program_name, "\"" + Application.ExecutablePath + "\"");
-            }
-            catch
-            {
-                
-            }
         }
 
         public void SyncingPin()
         {
             WebClient webClient = new WebClient();
             webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(Completed); // Download finish --> Syncing Pin 
-            webClient.DownloadFileAsync(new Uri(http + url + pin_name), appPath + pin_name);  // --> https://example.com/pin.txt
+            webClient.DownloadFileAsync(new Uri(git_link + pin_name), appPath + pin_name);  // --> https://example.com/pin.txt
         }
         private void Completed(object sender, AsyncCompletedEventArgs e)
         {
@@ -104,28 +86,8 @@ namespace DERIN
                 }
             }
         }
-        private void manuelpoweroff()
+        private void poweroff()
         {
-            try
-            {
-                StreamReader str = new StreamReader("name.txt");
-                string tahtaadi = str.ReadLine();
-                str.Close();
-                string uri = "ftp://" + url + "public_html/" + board_name + ".txt";
-                FtpWebRequest reqFTP;
-                reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(uri));
-                reqFTP.Credentials = new NetworkCredential(ftp_user, ftp_pass);
-                reqFTP.KeepAlive = false;
-                reqFTP.Method = WebRequestMethods.Ftp.DeleteFile;
-                string result = String.Empty;
-                FtpWebResponse response = (FtpWebResponse)reqFTP.GetResponse();
-                long size = response.ContentLength;
-                Stream datastream = response.GetResponseStream();
-                StreamReader sr = new StreamReader(datastream);
-                result = sr.ReadToEnd();
-                sr.Close();
-                datastream.Close();
-                response.Close();
                 Process process = new Process();
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.WindowStyle = ProcessWindowStyle.Hidden;
@@ -136,122 +98,11 @@ namespace DERIN
                 startInfo.Arguments = " -s -f -t 00";
                 process.StartInfo = startInfo;
                 process.Start();
-            }
-            catch
-            {
-                StreamReader str = new StreamReader("name.txt");
-                string tahtaadi = str.ReadLine();
-                str.Close();
-                string uri = "ftp://" + url + "public_html/" + board_name + ".txt";
-                FtpWebRequest reqFTP;
-                reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(uri));
-                reqFTP.Credentials = new NetworkCredential(ftp_user, ftp_pass);
-                reqFTP.KeepAlive = false;
-                reqFTP.Method = WebRequestMethods.Ftp.DeleteFile;
-                string result = String.Empty;
-                FtpWebResponse response = (FtpWebResponse)reqFTP.GetResponse();
-                long size = response.ContentLength;
-                Stream datastream = response.GetResponseStream();
-                StreamReader sr = new StreamReader(datastream);
-                result = sr.ReadToEnd();
-                sr.Close();
-                datastream.Close();
-                response.Close();
-                Process process = new Process();
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                startInfo.CreateNoWindow = true;
-                startInfo.UseShellExecute = false;
-                startInfo.RedirectStandardOutput = true;
-                startInfo.FileName = "shutdown";
-                startInfo.Arguments = " -s -f -t 00";
-                process.StartInfo = startInfo;
-                process.Start();
-            }
-            finally
-            {
-                Process process = new Process();
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                startInfo.CreateNoWindow = true;
-                startInfo.UseShellExecute = false;
-                startInfo.RedirectStandardOutput = true;
-                startInfo.FileName = "shutdown";
-                startInfo.Arguments = " -s -f -t 00";
-                process.StartInfo = startInfo;
-                process.Start();
-            }
-        }
-        public void runningProgram()
-        {
-            try
-            {
-                StreamReader str = new StreamReader("name.txt");
-                board_name = str.ReadLine();
-                str.Close();
-                FileInfo FI = new FileInfo(appPath + "name.txt");
-                string uri = "ftp://" + url + "public_html/" + board_name + ".txt";
-                FtpWebRequest FTP;
-                FTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(uri));
-                FTP.Credentials = new NetworkCredential(ftp_user, ftp_pass);
-                FTP.KeepAlive = false;
-                FTP.Method = WebRequestMethods.Ftp.UploadFile;
-                FTP.UseBinary = true;
-                FTP.ContentLength = FI.Length;
-                int buffLength = 2048;
-                byte[] buff = new byte[buffLength];
-                int contentLen;
-                FileStream FS = FI.OpenRead();
-                try
-                {
-                    Stream strm = FTP.GetRequestStream();
-                    contentLen = FS.Read(buff, 0, buffLength);
-                    while (contentLen != 0)
-                    {
-                        strm.Write(buff, 0, contentLen);
-                        contentLen = FS.Read(buff, 0, buffLength);
-                    }
-                    strm.Close();
-                    FS.Close();
-
-                }
-                catch
-                {
-                    MessageBox.Show("Lütfen Bilişim Teknolojileri Formatör Öğretmeni ile irtibata geçip hata kodunu bildiriniz. Bu hata akıllı tahtanın çalışmasına engel olabilecek düzeyde kritiktir.", "Hata Kodu : 101", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-            }
-            catch
-            {
-                try
-                {
-                    Random rnd = new Random();
-                    int randomname = rnd.Next(170, 20000);
-                    StreamWriter str = new StreamWriter("name.txt");
-                    str.WriteLine("NO_NAME" + randomname.ToString());
-                    str.Close();
-                    runningProgram();
-                }
-                catch
-                {
-                    MessageBox.Show("Lütfen Bilişim Teknolojileri Formatör Öğretmeni ile irtibata geçip hata kodunu bildiriniz. Bu hata akıllı tahtanın çalışmasına engel olabilecek düzeyde kritiktir.", "Hata Kodu : 102", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-                }
-
-            }
         }
 
         private void Btn_poweroff_Click(object sender, EventArgs e)
         {
-            manuelpoweroff(); // Power off pc and deleted name ftp info
-        }
-        private void poweroff()
-        {
-            powerform str = new powerform();
-            str.Show();
-            powerchecktimer.Enabled = false;
-            NotifyMessage("Önemli Bilgilendirme","Yönetici kontrolü devre dışı bırakılmıştır. Kullanım sonrası akıllı tahtayı kapatmayı unutmayınız",1000);
-
-
+            poweroff(); // Power off pc and deleted name ftp info
         }
         [DllImport("user32.dll")]
         static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, int dwExtraInfo);
@@ -267,34 +118,12 @@ namespace DERIN
             this.Left = Screen.PrimaryScreen.WorkingArea.Left;  // Screen Width --> Set form position right to left v0.3 beta.
             this.Top = Screen.PrimaryScreen.WorkingArea.Bottom - this.Height; // Screen Height
             SyncingPin(); // Downloading  --> Syncing Pin
-            runningProgram(); 
+            MinimizeAll();
             this.TopMost = true;
             this.Focus();
             this.BringToFront();
             this.Show();
             btn_lock.Enabled = false;
-        }
-        private void powercheck()
-        {
-            string FTPDosyaYolu = "ftp://" + url + "public_html/" + board_name + ".txt";
-            FtpWebRequest request = (FtpWebRequest)FtpWebRequest.Create(FTPDosyaYolu);
-            string username = ftp_user;
-            string password = ftp_pass;
-            request.Credentials = new NetworkCredential(username, password);
-            request.UsePassive = true; // pasif olarak kullanabilme
-            request.UseBinary = true; // aktarım binary ile olacak
-            request.KeepAlive = false; // sürekli açık tutma
-
-            request.Method = WebRequestMethods.Ftp.GetFileSize;
-
-            try
-            {
-                FtpWebResponse response = (FtpWebResponse)request.GetResponse(); // File found --> Smart board is on
-            }
-            catch
-            {
-                poweroff(); // File not found --> Smart board power off
-            }
         }
        public void NotifyMessage(string title, string message, int tip)
         {
@@ -306,11 +135,10 @@ namespace DERIN
         private void Btn_lock_Click(object sender, EventArgs e) { locker(); }
         private void EkranıGörüntüleToolStripMenuItem_Click(object sender, EventArgs e) { numpad.Clear(); Show(); }
         private void TahtayıKilitleToolStripMenuItem_Click(object sender, EventArgs e) { locker(); }
-        private void BilgisayarıKapatToolStripMenuItem_Click(object sender, EventArgs e) { numpad.Clear(); manuelpoweroff(); }
+        private void BilgisayarıKapatToolStripMenuItem_Click(object sender, EventArgs e) { numpad.Clear(); poweroff(); }
 
         private void Powerchechtimer_Tick(object sender, EventArgs e)
         {
-            powercheck();
 
         }
 
@@ -323,7 +151,11 @@ namespace DERIN
         private void info_name_Tick(object sender, EventArgs e)
         {
             info.Text = info.Text.Substring(1) + info.Text.Substring(0, 1);
-
+            time = DateTime.Now.ToShortTimeString();
+            if (time == "17:30")
+            {
+                poweroff();
+            }
         }
 
         private void info_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -343,7 +175,6 @@ namespace DERIN
             Taskbar.Show(); // |--> Taskbar Show --> Disabled Basic Security
             ShowDesktop();  // |--> Desktop Show --> Disabled Basic Security
             this.Hide();
-            info_name.Enabled = false;
             btn_lock.Enabled = true;
             NotifyMessage("Giriş Başarılı", "İyi Dersler", 1000);
         }
@@ -353,7 +184,6 @@ namespace DERIN
             HideDesktop();   // |--> Desktop Hide for Security
             KillProcess(); // |--> Process Kill Timer Enabled for Hard Security
             MinimizeAll();
-            info_name.Enabled = true;
 
         }
         // |----------------------------------------------------------------------------------------------------------------------------|
@@ -372,7 +202,7 @@ namespace DERIN
         // |----------------------------------------------------------------------------------------------------------------------------
         public void KillProcess()// |--> Kill Process --> For Basic Level Security
         {
-            foreach (var process in Process.GetProcessesByName("chrome")) { process.Kill(); } // Chrome Browser
+            //foreach (var process in Process.GetProcessesByName("chrome")) { process.Kill(); } // Chrome Browser
             foreach (var process in Process.GetProcessesByName("taskmgr")) { process.Kill(); } // Task Manager
             foreach (var process in Process.GetProcessesByName("MicrosoftEdge")) { process.Kill(); } // Microsoft Edge Browser
             foreach (var process in Process.GetProcessesByName("calc")) { process.Kill(); } // Calculator

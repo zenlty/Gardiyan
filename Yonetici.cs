@@ -10,10 +10,11 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using Microsoft.Win32;
 
-namespace DERIN
+namespace GARDIYAN
 {
     public partial class Yonetici : Form
     {
+        bool exitprogram = false;
         public Yonetici()
         {
             InitializeComponent();
@@ -46,7 +47,7 @@ namespace DERIN
                 RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
                 key.DeleteValue(Form1.program_name);
             }
-            catch (Exception)
+            catch 
             {
                 Process.Start(new ProcessStartInfo()
                 {
@@ -82,7 +83,16 @@ namespace DERIN
 
         private void Yonetici_FormClosing(object sender, FormClosingEventArgs e)
         {
-            e.Cancel = true;
+            if (exitprogram==false)
+            {
+                e.Cancel = true;
+            }
+            else
+            {
+                e.Cancel = false;
+                Application.Exit();
+            }
+
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -92,6 +102,7 @@ namespace DERIN
 
         private void button4_Click(object sender, EventArgs e)
         {
+            exitprogram = true;
             Application.Exit();
         }
 
