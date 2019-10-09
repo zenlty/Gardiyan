@@ -50,6 +50,16 @@ namespace GARDIYAN
         }
         private void Form1_Load(object sender, EventArgs e)
         {
+            try
+            {
+                using (RegistryKey key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true))
+                {
+                    key.SetValue("Gardiyan", "\"" + Application.ExecutablePath + "\"");
+                }
+            }
+            catch
+            {
+            }
             SecurityBoard(); // Smart board protected
             this.DesktopLocation = new Point(0, 0); // Set form location center
             this.Height = 389; // Form Height
@@ -64,15 +74,22 @@ namespace GARDIYAN
 
         public void SyncingPin()
         {
-            WebClient webClient = new WebClient();
-            webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(Completed); // Download finish --> Syncing Pin 
-            webClient.DownloadFileAsync(new Uri(git_link + pin_name), appPath + pin_name);  // --> https://example.com/pin.txt
+            string hedef = "https://github.com/smartgardiyan/Gardiyan/blob/master/pin.txt";
+            WebRequest istek = HttpWebRequest.Create(hedef);
+            WebResponse yanıt;
+            yanıt = istek.GetResponse();
+            StreamReader bilgiler = new StreamReader(yanıt.GetResponseStream());
+            string gelen = bilgiler.ReadToEnd();
+            int baslangic = gelen.IndexOf(@"<td id=""LC1""") + 60;
+            int bitis = gelen.Substring(baslangic).IndexOf("</td>");
+            string gelenbilgiler = gelen.Substring(baslangic, bitis);
+            pin = gelenbilgiler;
+            Completed();
+
+         //   MessageBox.Show(gelenbilgiler);
         }
-        private void Completed(object sender, AsyncCompletedEventArgs e)
+        private void Completed()
         {
-            StreamReader str = new StreamReader(pin_name); //  |--> Set Downloaded Pin
-            pin = str.ReadLine(); //  |--> Reading downloading pin
-            str.Close(); // |--> Readed pin
             //MD5 Encoding
             byte[] data = Convert.FromBase64String(pin);
             using (MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider())
